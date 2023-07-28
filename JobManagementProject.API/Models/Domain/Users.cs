@@ -16,7 +16,7 @@ namespace JobManagementProject.API.Models.Domain
         public Guid DesignationId { get; set; }
         [ForeignKey(nameof(DesignationId))]
         public virtual Designations? Designations { get; set; }
-        public string EmpId { get; set; }
+        public int EmpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get; set; }

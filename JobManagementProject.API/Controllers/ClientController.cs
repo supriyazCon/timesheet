@@ -1,28 +1,32 @@
 ﻿using AutoMapper;
+using JobManagementProject.API.Data;
 using JobManagementProject.API.Models.Domain;
 using JobManagementProject.API.Models.DTO;
 using JobManagementProject.API.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace JobManagementProject.API.Controllers
 {
     // api/clients
-    [Route("api/[controller]")]
+    [Route("api/client")]
     [ApiController]
     public class ClientController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IClientRepository clientRepository;
         private readonly ILogger<ClientController> logger;
+        private readonly JobDbContext dbContext;
 
-        public ClientController(IMapper mapper, IClientRepository clientRepository, ILogger<ClientController> logger)
+        public ClientController(IMapper mapper, IClientRepository clientRepository, ILogger<ClientController> logger, JobDbContext dbContext)
         {
             this.mapper = mapper;
             this.clientRepository = clientRepository;
             this.logger = logger;
+            this.dbContext = dbContext;
         }
 
 
@@ -87,8 +91,16 @@ namespace JobManagementProject.API.Controllers
 
              await clientRepository.CreateAsync(clientDomainModel);
 
+
+            // Check if the client name is unique before saving
+            if (dbContext.Clients.Any(c => c.ClientName == addClientRequestDto.ClientName))
+            {
+                ModelState.AddModelError("ClientName", "Client name must be unique.");
+                return BadRequest(ModelState);
+            }
+
             // Map Domain Model To DTO
-             return Ok(mapper.Map<ClientDto>(clientDomainModel));
+            return Ok(mapper.Map<ClientDto>(clientDomainModel));
 
 
         }
@@ -133,6 +145,11 @@ namespace JobManagementProject.API.Controllers
             {
                 return NotFound();
             }
+
+            // Soft delete by setting the IsDeleted flag to true
+            deletedClientDomainModel.IsDeleted = true;
+            dbContext.SaveChanges();
+
 
             // Map Domain Model to DTO
             return Ok(mapper.Map<ClientDto>(deletedClientDomainModel));

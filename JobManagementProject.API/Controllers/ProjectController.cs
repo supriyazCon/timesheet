@@ -1,25 +1,29 @@
 ﻿using AutoMapper;
+using JobManagementProject.API.Data;
 using JobManagementProject.API.Models.Domain;
 using JobManagementProject.API.Models.DTO;
 using JobManagementProject.API.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobManagementProject.API.Controllers
 {
     //api/Project
-    [Route("api/[controller]")]
+    [Route("api/project")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IProjectRepository projectRepository;
+        private readonly JobDbContext dbContext;
 
-        public ProjectController(IMapper mapper, IProjectRepository projectRepository)
+        public ProjectController(IMapper mapper, IProjectRepository projectRepository, JobDbContext dbContext)
         {
             this.mapper = mapper;
             this.projectRepository = projectRepository;
+            this.dbContext = dbContext;
         }
 
 
@@ -71,6 +75,15 @@ namespace JobManagementProject.API.Controllers
             var projectDomainModel = mapper.Map<Project>(addProjectRequestDto);
 
             await projectRepository.CreateAsync(projectDomainModel);
+
+
+
+            // Check if the client name is unique before saving
+            if (dbContext.Project.Any(c => c.ProjectName == addProjectRequestDto.ProjectName))
+            {
+                ModelState.AddModelError("ProjectName", "Project name must be unique.");
+                return BadRequest(ModelState);
+            }
 
             //Map Domain Model To DTO
             return Ok(mapper.Map<ProjectDto>(projectDomainModel));

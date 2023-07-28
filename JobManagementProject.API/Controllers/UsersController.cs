@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobManagementProject.API.Controllers
 {
     // https://localhost:1234/api/users
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UsersController : ControllerBase
     {

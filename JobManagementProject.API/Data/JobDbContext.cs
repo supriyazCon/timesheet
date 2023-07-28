@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace JobManagementProject.API.Data
 {
     public class JobDbContext : IdentityDbContext<IdentityUser>
@@ -21,13 +23,17 @@ namespace JobManagementProject.API.Data
         public DbSet<ProjectUsers> ProjectUsers { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<TaskAssign> TaskAssigns { get; set; }
-        public DbSet<TaskProject> TaskProject { get; set; }
+        public DbSet<ProjectTask> TaskProject { get; set; }
         public DbSet<TimeSheets> TimeSheets { get; set; }
         public DbSet<Currency> Currencies { get; set; }
-        //public DbSet<BillingMethod> BillingMethods { get; set; }
+        public DbSet<BillingMethod> BillingMethods { get; set; }
+        public DbSet<DeliveryManager> DeliveryManager { get; set; }
+        public DbSet<ProjectManager> ProjectManager { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
 
-        
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,16 +73,13 @@ namespace JobManagementProject.API.Data
             builder.Entity<IdentityRole>().HasData(roles);
 
 
+            builder.Entity<CommonEntity>().Property(x => x.IsActive).HasDefaultValue(true);
+            builder.Entity<CommonEntity>().HasQueryFilter(x => !x.IsDeleted); // Apply filter for soft delete
 
+            builder.Ignore<CommonEntity>();
 
-            var currencies = new List<Currency>
-            {
-                new Currency { CurrencyCode = "USD", CurrencyId = 100, NormalizedName = "USD".ToUpper()},
-                new Currency { CurrencyCode = "EUR", CurrencyId = 200, NormalizedName = "EUR".ToUpper()},
-                new Currency { CurrencyCode = "JPY", CurrencyId = 300, NormalizedName = "JPY".ToUpper()},
-              
-               // Add more currencies as needed
-            };
+            // Configure CommonEntity as keyless
+            /*builder.Entity<CommonEntity>().HasNoKey();*/
         }
 
 

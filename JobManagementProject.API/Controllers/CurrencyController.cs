@@ -10,7 +10,7 @@ using System.Data;
 
 namespace JobManagementProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/currency")]
     [ApiController]
     public class CurrencyController : ControllerBase
     {
@@ -30,7 +30,7 @@ namespace JobManagementProject.API.Controllers
             return Ok(currencies);
         }
 
-        // GET api/currency/1
+       /* // GET api/currency/1
         [HttpGet("{id}")]
         public IActionResult GetCurrency(int id)
         {
@@ -39,19 +39,8 @@ namespace JobManagementProject.API.Controllers
                 return NotFound();
 
             return Ok(currency);
-        }
+        }*/
 
-        private string GenerateCurrencyCode()
-        {
-            // List of available currency codes
-            string[] currencyCodes = { "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "SGD", "NZD" };
-
-            // Generate a random index to pick a currency code from the list
-            Random random = new Random();
-            int randomIndex = random.Next(0, currencyCodes.Length);
-
-            // Return the randomly picked currency code
-            return currencyCodes[randomIndex];
-        }
+       
     }
 }

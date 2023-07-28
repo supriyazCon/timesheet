@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobManagementProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/timesheet")]
     [ApiController]
     public class TimeSheetsController : ControllerBase
     {

@@ -5,8 +5,8 @@ namespace JobManagementProject.API.Models.Domain
 {
     public class ProjectUsers : CommonEntity
     {
+
         [Key]
-        
         public Guid ProjectUserId { get; set; }
 
         [Display(Name = "Project")]

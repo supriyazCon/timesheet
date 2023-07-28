@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobManagementProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace JobManagementProject.API.Controllers
 
         // Post: /api/auth/Register
         [HttpPost]
-        [Route("Register")]
+        [Route("api/register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
             var identityUser = new IdentityUser
@@ -55,7 +55,7 @@ namespace JobManagementProject.API.Controllers
 
         // Post: /api/Auth/Login
         [HttpPost]
-        [Route("Login")]
+        [Route("api/login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
             var user = await userManager.FindByEmailAsync(loginRequestDto.UserName);

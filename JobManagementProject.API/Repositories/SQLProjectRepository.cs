@@ -58,7 +58,7 @@ namespace JobManagementProject.API.Repositories
 
             existingproject.ProjectName = project.ProjectName;
             existingproject.ProjectCost = project.ProjectCost;
-            existingproject.ProjectHeadId = project.ProjectHeadId;
+            existingproject.DeliveryManagerId = project.DeliveryManagerId;
             existingproject.ProjectManagerId = project.ProjectManagerId;
             existingproject.Description = project.Description;
 

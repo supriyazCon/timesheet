@@ -23,7 +23,7 @@ namespace JobManagementProject.API.Repositories
             return task;
         }
 
-        public async Task<TaskProject> CreateTaskProjectAsync(TaskProject taskProject)
+        public async Task<ProjectTask> CreateTaskProjectAsync(ProjectTask taskProject)
         {
             await dbContext.TaskProject.AddAsync(taskProject);
             await dbContext.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace JobManagementProject.API.Repositories
 
         }
 
-        public async Task<TaskProject> DeleteTaskProjectAsync(string job)
+        public async Task<ProjectTask> DeleteTaskProjectAsync(string job)
         {
             var existingProjectTask = await dbContext.TaskProject.FirstOrDefaultAsync(x => x.JobName == job);
 
@@ -64,7 +64,7 @@ namespace JobManagementProject.API.Repositories
             return await dbContext.Tasks.ToListAsync();
         }
 
-        public async Task<List<TaskProject>> GetAllTaskProjectAsync(string? filterOn = null, string? filterQuery = null/*,
+        public async Task<List<ProjectTask>> GetAllTaskProjectAsync(string? filterOn = null, string? filterQuery = null/*,
             string? sortBy = null, bool isAscending = true*/)
         {
             var taskProject = dbContext.TaskProject.AsQueryable();

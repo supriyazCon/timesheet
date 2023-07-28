@@ -7,7 +7,7 @@ namespace JobManagementProject.API.Models.DTO
     public class AddUsersRequestDto
     {
 
-        public string EmpId { get; set; }
+        public int EmpId { get; set; }
         public Guid UserRoleId { get; set; }
         public Guid DesignationId { get; set; }
         public string FirstName { get; set; }

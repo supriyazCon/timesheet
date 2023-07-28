@@ -73,7 +73,6 @@ builder.Services.AddScoped<ITaskRepository, SQLTaskRepository>();
 builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
 builder.Services.AddScoped<IProjectRepository, SQLProjectRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-//builder.Services.AddScoped<ICurrencyRepository, SQLCurrencyRepository>();
 
 
 
@@ -111,33 +110,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
-
-
- void Configure(IApplicationBuilder app, IWebHostEnvironment env, JobDbContext dbContext)
-{
-    // Other middleware configurations
-
-    // Seed initial data for currencies
-    if (!dbContext.Currencies.Any())
-    {
-        SeedCurrencies(dbContext);
-    }
-}
-
- void SeedCurrencies(JobDbContext dbContext)
-{
-    var currencies = new List<Currency>
-    {
-        new Currency { CurrencyCode = "USD", CurrencyId = 100},
-        new Currency { CurrencyCode = "EUR", CurrencyId = 200},
-        new Currency { CurrencyCode = "JPY", CurrencyId = 300},
-        // Add more currencies as needed
-    };
-
-    dbContext.Currencies.AddRange(currencies);
-    dbContext.SaveChanges();
-}
-
 
 
 

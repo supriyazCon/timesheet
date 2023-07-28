@@ -4,7 +4,7 @@ namespace JobManagementProject.API.Models.Domain
 {
     public class Designations : CommonEntity
     {
-        [Key]
+       [Key]
         public Guid DesignationId { get; set; }
         [Display(Name = "Designations")]
         [Required]

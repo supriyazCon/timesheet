@@ -4,6 +4,7 @@ namespace JobManagementProject.API.Models.DTO
 {
     public class ClientDto
     {
+        [Key]
         public Guid ClientId { get; set; }
         [Display(Name = "Clients Name")]
         [Required]
@@ -14,8 +15,8 @@ namespace JobManagementProject.API.Models.DTO
         public string Phone { get; set; }
         public string Mobile { get; set; }
         public string Fax { get; set; }
-        public string CurrencyId { get; set; }
-        public string BillingMethodId { get; set; }
+        public int CurrencyId { get; set; }
+        public int BillingMethodId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }

@@ -4,7 +4,7 @@ namespace JobManagementProject.API.Models.Domain
 {
     public class UserRoles : CommonEntity
     {
-        [Key]
+       [Key]
         public Guid UserRoleId { get; set; }
         [Display(Name = "UserRoles Name")]
         [Required]

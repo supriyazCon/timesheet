@@ -36,9 +36,9 @@ namespace JobManagementProject.API.Mappings
 
             CreateMap<UpdateProjectRequestDto , Project>().ReverseMap();
 
-            CreateMap<TaskProject, TaskProjectDto>().ReverseMap();
+            CreateMap<ProjectTask, ProjectTaskDto>().ReverseMap();
 
-            CreateMap<AddTaskProjectRequestDto, TaskProject>().ReverseMap();
+            CreateMap<AddProjectTaskRequestDto, ProjectTask>().ReverseMap();
 
             //CreateMap<Currency,  CurrencyDto>().ReverseMap();
         }

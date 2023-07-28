@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobManagementProject.API.Controllers
 {
     // api/task
-    [Route("api/[controller]")]
+    [Route("api/task")]
     [ApiController]
     public class TaskController : ControllerBase
     {
@@ -39,7 +39,7 @@ namespace JobManagementProject.API.Controllers
 
         // Get All Task Project
         // GET : /api/task project?filteronJobNAme&Project&filterquery=Track&&sortBy=Name&ProjectisAccending=true
-        [HttpGet("api/TaskProject")]
+        [HttpGet("api/taskproject")]
         //[Authorize(Roles = "ProjectManager, DeliveryManager")]
 
         public async Task<IActionResult> GetAllTaskProject([FromQuery] string? filterOn, [FromQuery] string? filterQuery
@@ -48,7 +48,7 @@ namespace JobManagementProject.API.Controllers
             var taskProjectkDomainModel = await taskRepository.GetAllTaskProjectAsync(filterOn, filterQuery/*, sortBy, isAscending ?? true*/);
 
             // Map Domain Model to DTO
-            return Ok(mapper.Map<List<TaskProjectDto>>(taskProjectkDomainModel));
+            return Ok(mapper.Map<List<ProjectTaskDto>>(taskProjectkDomainModel));
         }
 
 
@@ -75,20 +75,20 @@ namespace JobManagementProject.API.Controllers
 
         // Create Task Project
         // POST : /api/taskproject
-        [HttpPost("api/TaskProject")]
+        [HttpPost("api/taskproject")]
         //[Authorize(Roles = "DeliveryManager, ProjectManager")]
 
-        public async Task<IActionResult> CreateTaskProject([FromBody] AddTaskProjectRequestDto addTaskProjectRequestDto)
+        public async Task<IActionResult> CreateTaskProject([FromBody] AddProjectTaskRequestDto addTaskProjectRequestDto)
         {
             // Map DTO to Domain Model
-            var tasProjectkDomainModel = mapper.Map<TaskProject>(addTaskProjectRequestDto);
+            var tasProjectkDomainModel = mapper.Map<ProjectTask>(addTaskProjectRequestDto);
             
            
             await taskRepository.CreateTaskProjectAsync(tasProjectkDomainModel);
 
             // Map Domain Model to DTO
 
-            return Ok(mapper.Map<TaskProjectDto>(tasProjectkDomainModel));
+            return Ok(mapper.Map<ProjectTaskDto>(tasProjectkDomainModel));
 
 
         }
@@ -138,7 +138,7 @@ namespace JobManagementProject.API.Controllers
 
         // Delete A Task by JobNAme
         // DELETE : /api/task/job name
-        [HttpDelete("api/TaskProject")]
+        [HttpDelete("api/taskproject")]
         //[Authorize(Roles = "DeliveryManager, ProjectManager")]
 
         public async Task<IActionResult> DeleteTaskProject(string job)
@@ -151,7 +151,7 @@ namespace JobManagementProject.API.Controllers
             }
 
             // Map DOmain Model to DTO
-            return Ok(mapper.Map<TaskProjectDto>(deletedTaskProjectDomainModel));
+            return Ok(mapper.Map<ProjectTaskDto>(deletedTaskProjectDomainModel));
         }
     }
 }
