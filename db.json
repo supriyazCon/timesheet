@@ -1,0 +1,123 @@
+{
+  "client": [
+    {
+      "clientName": "clinetd",
+      "currencyId": "",
+      "billingMethodId": "",
+      "createdBy": 1,
+      "updatedBy": 1,
+      "createdDate": "2023-07-22T13:55:55.621Z",
+      "updatedDate": "2023-07-22T13:55:55.621Z",
+      "emailId": "sarojsuraj52@gmail.com",
+      "firstName": "SURAJ",
+      "lastName": "SAROJ",
+      "phone": "+918850912764",
+      "mobile": "+918850912764",
+      "fax": "",
+      "id": 7
+    },
+    {
+      "clientName": "clientsssssss",
+      "currencyId": "1",
+      "billingMethodId": "1",
+      "createdBy": 1,
+      "updatedBy": 1,
+      "createdDate": "2023-07-22T13:47:09.999Z",
+      "updatedDate": "2023-07-22T13:47:09.999Z",
+      "emailId": "sarojsuraj52@gmail.com",
+      "firstName": "SURAJ",
+      "lastName": "SAROJ",
+      "phone": "+918850912764",
+      "mobile": "",
+      "fax": "",
+      "id": 28
+    },
+    {
+      "jobName": "job 1",
+      "project": 1,
+      "startDate": "08/08/2023",
+      "endDate": "08/08/2023",
+      "estimatedHours": 9,
+      "loggedHours": 9,
+      "status": "done",
+      "users": [],
+      "id": 31
+    },
+    {
+      "clientName": "client 3",
+      "currencyId": "1",
+      "billingMethodId": "2",
+      "createdBy": 1,
+      "updatedBy": 1,
+      "createdDate": "2023-07-24T00:26:43.427Z",
+      "updatedDate": "2023-07-24T00:26:43.427Z",
+      "emailId": "sarojsuraj52@gmail.com",
+      "firstName": "SURAJ",
+      "lastName": "SAROJ",
+      "phone": "+918850912764",
+      "mobile": "",
+      "fax": "",
+      "id": 32
+    }
+  ],
+  "project": [
+    {
+      "projectName": "project 1",
+      "clientName": 1,
+      "projectCost": "230",
+      "projectHead": 1,
+      "rate": "233",
+      "projectManager": 1,
+      "projectUsers": 1,
+      "description": "desc",
+      "isActive": true,
+      "isDeleted": false,
+      "createdDate": "2023-07-18T08:41:56.711Z",
+      "updatedDate": "2023-07-18T08:41:56.711Z",
+      "createdBy": 1,
+      "updatedBy": 1,
+      "id": 5
+    },
+    {
+      "projectName": "project 2",
+      "clientName": 1,
+      "projectCost": "230",
+      "projectHead": 1,
+      "rate": "233",
+      "projectManager": 1,
+      "projectUsers": 1,
+      "description": "desc",
+      "isActive": true,
+      "isDeleted": false,
+      "createdDate": "2023-07-18T08:41:56.711Z",
+      "updatedDate": "2023-07-18T08:41:56.711Z",
+      "createdBy": 1,
+      "updatedBy": 1,
+      "id": 23
+    }
+  ],
+  "job": [
+    {
+      "jobName": "job 2",
+      "project": 2,
+      "startDate": "",
+      "endDate": "",
+      "estimatedHours": 0,
+      "loggedHours": 0,
+      "status": "",
+      "users": [],
+      "id": 3
+    },
+    {
+      "jobName": "job 1",
+      "project": 1,
+      "startDate": "",
+      "endDate": "",
+      "estimatedHours": 0,
+      "loggedHours": 0,
+      "status": "",
+      "users": [],
+      "id": 4
+    }
+  ]
+}
