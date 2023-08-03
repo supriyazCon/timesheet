@@ -1,0 +1,27 @@
+.sideBar {
+  position: absolute;
+  background-color: #303056;
+  left: 5rem;
+  transition: 0.3s;
+  padding: 15px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 0 5px 5px 0;
+  height: 100vh;
+  z-index: 10;
+}
+
+.closeSidebar {
+  position: absolute;
+  background-color: #303056;
+  left: -7rem;
+  transition: 0.3s;
+  padding: 15px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 0 5px 5px 0;
+  height: 100vh;
+  z-index: 1;
+}
