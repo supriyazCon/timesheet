@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/sqlserver-jobmgt-eastus-dev-002/databases/sqldb-jobmgt-eastus-dev-002",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:JobManagementConnectionString",
+      "dynamicId": null
+    }
+  }
+}
