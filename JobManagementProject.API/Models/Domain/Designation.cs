@@ -2,12 +2,12 @@
 
 namespace JobManagementProject.API.Models.Domain
 {
-    public class Designations : CommonEntity
+    public class Designation : CommonEntity
     {
        [Key]
-        public Guid DesignationId { get; set; }
-        [Display(Name = "Designations")]
+
         [Required]
+        public Guid DesignationId { get; set; }
         public string DesignationName { get; set; }
         
 

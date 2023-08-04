@@ -6,9 +6,10 @@ namespace JobManagementProject.API.Models.DTO
     public class UsersDto
     {
         [Key]
-        public Guid UserId { get; set; }
-        [Display(Name = "Users Name")]
+
         [Required]
+        public Guid UserId { get; set; }
+        
         public Guid UserRoleId { get; set; }
         public Guid DesignationId { get; set; }
         public int EmpId { get; set; }

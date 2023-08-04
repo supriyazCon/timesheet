@@ -15,21 +15,21 @@ namespace JobManagementProject.API.Data
             
         }
 
-        public DbSet<Users> Users { get; set; }
-        public DbSet<UserRoles> UserRoles { get; set; }
-        public DbSet<Clients> Clients { get; set; }
-        public DbSet<Designations> Designations { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Client> Client { get; set; }
+        public DbSet<Designation> Designation { get; set; }
         public DbSet<Project> Project { get; set; }
-        public DbSet<ProjectUsers> ProjectUsers { get; set; }
-        public DbSet<Tasks> Tasks { get; set; }
-        public DbSet<TaskAssign> TaskAssigns { get; set; }
+        public DbSet<ProjectUsers> ProjectUser { get; set; }
+        public DbSet<Tasks> Task { get; set; }
+        public DbSet<TaskAssign> TaskAssign { get; set; }
         public DbSet<ProjectTask> TaskProject { get; set; }
-        public DbSet<TimeSheets> TimeSheets { get; set; }
-        public DbSet<Currency> Currencies { get; set; }
-        public DbSet<BillingMethod> BillingMethods { get; set; }
+        public DbSet<TimeSheet> TimeSheet { get; set; }
+        public DbSet<Currency> Currency { get; set; }
+        public DbSet<BillingMethod> BillingMethod { get; set; }
         public DbSet<DeliveryManager> DeliveryManager { get; set; }
         public DbSet<ProjectManager> ProjectManager { get; set; }
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Country> Country { get; set; }
 
 
 
@@ -71,18 +71,29 @@ namespace JobManagementProject.API.Data
             };
 
             builder.Entity<IdentityRole>().HasData(roles);
+          //builder.Entity<CommonEntity>().HasQueryFilter(e => !e.IsDeleted);
 
+            
 
-            builder.Entity<CommonEntity>().Property(x => x.IsActive).HasDefaultValue(true);
-            builder.Entity<CommonEntity>().HasQueryFilter(x => !x.IsDeleted); // Apply filter for soft delete
-
-            builder.Ignore<CommonEntity>();
-
-            // Configure CommonEntity as keyless
-            /*builder.Entity<CommonEntity>().HasNoKey();*/
         }
 
+       /* public override int  SaveChanges()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                var entity = entry.Entity;
 
+                if(entry.State == EntityState.Deleted)
+                {
+                    entry.State = EntityState.Modified;
+
+
+                    entity.GetType().GetProperty("IsDeleted").SetValue(entity, 'D');
+                }
+            }
+
+            return base.SaveChanges();
+        }*/
 
 
     }

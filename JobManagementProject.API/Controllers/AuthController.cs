@@ -79,6 +79,7 @@ namespace JobManagementProject.API.Controllers
                         {
                             JwtToken = jwtToken,
                             Roles = roles.ToList()
+
                         };
 
                         return Ok(response);

@@ -17,13 +17,13 @@ namespace JobManagementProject.API.Controllers
     {
         private readonly IMapper mapper;
         private readonly IProjectRepository projectRepository;
-        private readonly JobDbContext dbContext;
+       
 
-        public ProjectController(IMapper mapper, IProjectRepository projectRepository, JobDbContext dbContext)
+        public ProjectController(IMapper mapper, IProjectRepository projectRepository)
         {
             this.mapper = mapper;
             this.projectRepository = projectRepository;
-            this.dbContext = dbContext;
+           
         }
 
 
@@ -31,7 +31,7 @@ namespace JobManagementProject.API.Controllers
         // Get All Projects
         // GET : /api/project
         [HttpGet]
-       // [Authorize(Roles = "ProjectManager, DeliveryManager")]
+        //[Authorize(Roles = "ProjectManager, DeliveryManager")]
         public async Task<IActionResult> GetAll()
         {
             var projectsDomainModel = await projectRepository.GetAllAsync();
@@ -55,7 +55,7 @@ namespace JobManagementProject.API.Controllers
                 return NotFound();
             }
 
-            var client = projectDomainModel.Clients;
+            var client = projectDomainModel.Client;
             var projectDto = mapper.Map<ProjectDto>(projectDomainModel);
 
             // Map Domain Model To DTO
@@ -79,11 +79,11 @@ namespace JobManagementProject.API.Controllers
 
 
             // Check if the client name is unique before saving
-            if (dbContext.Project.Any(c => c.ProjectName == addProjectRequestDto.ProjectName))
+           /* if (dbContext.Project.Any(c => c.ProjectName == addProjectRequestDto.ProjectName))
             {
                 ModelState.AddModelError("ProjectName", "Project name must be unique.");
                 return BadRequest(ModelState);
-            }
+            }*/
 
             //Map Domain Model To DTO
             return Ok(mapper.Map<ProjectDto>(projectDomainModel));

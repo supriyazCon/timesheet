@@ -3,19 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobManagementProject.API.Models.Domain
 {
-    public class Users : CommonEntity
+    public class User : CommonEntity
     {
         [Key]
 
-        public Guid UserId { get; set; }
-        [Display(Name = "Users Name")]
         [Required]
+        public Guid UserId { get; set; }
         public int UserRoleId { get; set; }
 
-        [Display(Name = "Designations")]
+        [ForeignKey("DesignationId")]
         public Guid DesignationId { get; set; }
-        [ForeignKey(nameof(DesignationId))]
-        public virtual Designations? Designations { get; set; }
+        public virtual Designation Designation { get; set; }
         public int EmpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

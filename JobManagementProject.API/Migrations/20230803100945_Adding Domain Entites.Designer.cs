@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobManagementProject.API.Migrations
 {
     [DbContext(typeof(JobDbContext))]
-    [Migration("20230727125216_Adding Domain Entities")]
-    partial class AddingDomainEntities
+    [Migration("20230803100945_Adding Domain Entites")]
+    partial class AddingDomainEntites
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,18 +46,17 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("BillingMethodId");
 
-                    b.ToTable("BillingMethods");
+                    b.ToTable("BillingMethod");
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Clients", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Client", b =>
                 {
                     b.Property<Guid>("ClientId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("BillingMethodId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BillingMethodId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ClientName")
                         .IsRequired()
@@ -69,9 +68,8 @@ namespace JobManagementProject.API.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrencyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmailId")
                         .IsRequired()
@@ -111,7 +109,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("ClientId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Country", b =>
@@ -128,7 +126,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Currency", b =>
@@ -152,7 +150,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("CurrencyId");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currency");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.DeliveryManager", b =>
@@ -176,7 +174,7 @@ namespace JobManagementProject.API.Migrations
                     b.ToTable("DeliveryManager");
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Designations", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Designation", b =>
                 {
                     b.Property<Guid>("DesignationId")
                         .ValueGeneratedOnAdd()
@@ -206,7 +204,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("DesignationId");
 
-                    b.ToTable("Designations");
+                    b.ToTable("Designation");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Project", b =>
@@ -215,7 +213,7 @@ namespace JobManagementProject.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClientsClientId")
+                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("CreatedBy")
@@ -258,7 +256,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.HasIndex("ClientsClientId");
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Project");
                 });
@@ -282,6 +280,20 @@ namespace JobManagementProject.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProjectManager");
+                });
+
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.ProjectTask", b =>
+                {
+                    b.Property<string>("JobName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Project")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("JobName");
+
+                    b.ToTable("TaskProject");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.ProjectUsers", b =>
@@ -320,7 +332,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUsers");
+                    b.ToTable("ProjectUser");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.TaskAssign", b =>
@@ -335,21 +347,7 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskAssigns");
-                });
-
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.TaskProject", b =>
-                {
-                    b.Property<string>("JobName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Project")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("JobName");
-
-                    b.ToTable("TaskProject");
+                    b.ToTable("TaskAssign");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Tasks", b =>
@@ -358,6 +356,18 @@ namespace JobManagementProject.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
@@ -365,14 +375,20 @@ namespace JobManagementProject.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("TaskId");
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Task");
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.TimeSheets", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.TimeSheet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -413,47 +429,10 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeSheets");
+                    b.ToTable("TimeSheet");
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.UserRoles", b =>
-                {
-                    b.Property<Guid>("UserRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserRoleId");
-
-                    b.ToTable("UserRoles");
-                });
-
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Users", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.User", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -472,9 +451,8 @@ namespace JobManagementProject.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmpId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("EmpId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -511,7 +489,44 @@ namespace JobManagementProject.API.Migrations
 
                     b.HasIndex("DesignationId");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.UserRole", b =>
+                {
+                    b.Property<Guid>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserRoleId");
+
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -737,11 +752,13 @@ namespace JobManagementProject.API.Migrations
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Project", b =>
                 {
-                    b.HasOne("JobManagementProject.API.Models.Domain.Clients", "Clients")
+                    b.HasOne("JobManagementProject.API.Models.Domain.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientsClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Clients");
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.ProjectUsers", b =>
@@ -752,7 +769,7 @@ namespace JobManagementProject.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JobManagementProject.API.Models.Domain.Users", "Users")
+                    b.HasOne("JobManagementProject.API.Models.Domain.User", "User")
                         .WithMany("ProjectUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -760,26 +777,26 @@ namespace JobManagementProject.API.Migrations
 
                     b.Navigation("Project");
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.TaskAssign", b =>
                 {
-                    b.HasOne("JobManagementProject.API.Models.Domain.Tasks", "Tasks")
+                    b.HasOne("JobManagementProject.API.Models.Domain.Tasks", "Task")
                         .WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JobManagementProject.API.Models.Domain.Users", "Users")
+                    b.HasOne("JobManagementProject.API.Models.Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tasks");
+                    b.Navigation("Task");
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.Tasks", b =>
@@ -793,15 +810,15 @@ namespace JobManagementProject.API.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Users", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.User", b =>
                 {
-                    b.HasOne("JobManagementProject.API.Models.Domain.Designations", "Designations")
+                    b.HasOne("JobManagementProject.API.Models.Domain.Designation", "Designation")
                         .WithMany()
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Designations");
+                    b.Navigation("Designation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -855,7 +872,7 @@ namespace JobManagementProject.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("JobManagementProject.API.Models.Domain.Users", b =>
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.User", b =>
                 {
                     b.Navigation("ProjectUsers");
                 });

@@ -5,8 +5,7 @@ namespace JobManagementProject.API.Models.DTO
     
     public class AddClientRequestDto
     {
-       // public Guid ClientId { get; set; }
-        //[Display(Name = "Clients Name")]
+      
         //[Required]
 
         public string ClientName { get; set; }

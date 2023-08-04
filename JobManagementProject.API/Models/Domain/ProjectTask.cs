@@ -5,7 +5,7 @@ namespace JobManagementProject.API.Models.Domain
 {
     public class ProjectTask
     {
-        
+        [Key]
 
         public string JobName { get; set; }
 

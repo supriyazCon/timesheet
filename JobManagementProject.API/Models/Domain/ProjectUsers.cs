@@ -9,16 +9,14 @@ namespace JobManagementProject.API.Models.Domain
         [Key]
         public Guid ProjectUserId { get; set; }
 
-        [Display(Name = "Project")]
+        [ForeignKey("ProjectId")]
         public Guid ProjectId { get; set; }
-        [ForeignKey(nameof(ProjectId))]
-        public virtual Project? Project { get; set; }
+        
+       public virtual Project Project { get; set; }
 
-       
-        [Display(Name = "Users")]
+        [ForeignKey("UserId")]
         public Guid UserId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public virtual Users? Users { get; set; }
+        public virtual User User { get; set; }
        
         
     }

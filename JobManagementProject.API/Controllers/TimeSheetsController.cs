@@ -68,7 +68,7 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Create([FromBody] AddTimeSheetRequestDto addTimeSheetRequestDto)
         {
             // Map DTo to Domain Model 
-           var TimeSheetDomainModel = mapper.Map<TimeSheets>(addTimeSheetRequestDto);
+           var TimeSheetDomainModel = mapper.Map<TimeSheet>(addTimeSheetRequestDto);
 
            await timeSheetRepository.CreateAsync(TimeSheetDomainModel);
 
@@ -86,7 +86,7 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateTimeSheetRequestDto updateTimeSheetRequestDto)
         {
             // Map DTO to Domain Model
-            var timeSheetDomainModel = mapper.Map<TimeSheets>(updateTimeSheetRequestDto);
+            var timeSheetDomainModel = mapper.Map<TimeSheet>(updateTimeSheetRequestDto);
 
             timeSheetDomainModel = await timeSheetRepository.UpdateAsync(id, timeSheetDomainModel);
 

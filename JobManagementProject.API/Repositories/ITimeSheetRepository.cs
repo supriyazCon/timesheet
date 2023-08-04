@@ -4,10 +4,10 @@ namespace JobManagementProject.API.Repositories
 {
     public interface ITimeSheetRepository
     {
-        Task<TimeSheets> CreateAsync(TimeSheets timeSheets);
-        Task<List<TimeSheets>> GetAllAsync();
-        Task<TimeSheets> GetByDateAsync(DateTime date);
-        Task<TimeSheets?> UpdateAsync(Guid id, TimeSheets timeSheets);
-        Task<TimeSheets?> DeleteAsync(Guid id);
+        Task<TimeSheet> CreateAsync(TimeSheet timeSheets);
+        Task<List<TimeSheet>> GetAllAsync();
+        Task<TimeSheet> GetByDateAsync(DateTime date);
+        Task<TimeSheet?> UpdateAsync(Guid id, TimeSheet timeSheets);
+        Task<TimeSheet?> DeleteAsync(Guid id);
     }
 }

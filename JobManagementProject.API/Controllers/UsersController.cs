@@ -48,7 +48,7 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Create([FromBody] AddUsersRequestDto addUsersRequestDto)
         {
             // Map or Convert to DTO to Domain Model
-            var UserDomainModel = mapper.Map<Users>(addUsersRequestDto);
+            var UserDomainModel = mapper.Map<User>(addUsersRequestDto);
            
             // Use Domain Model to create user
             UserDomainModel = await usersRepository.CreateAsync(UserDomainModel);

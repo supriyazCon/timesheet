@@ -19,7 +19,7 @@ namespace JobManagementProject.API.Controllers
         [HttpGet]
         public IActionResult GetBilling() 
         {
-            var billingMethod = jobDbContext.BillingMethods.ToList();
+            var billingMethod = jobDbContext.BillingMethod.ToList();
             return Ok(billingMethod);
         }
     }

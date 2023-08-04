@@ -8,27 +8,27 @@ namespace JobManagementProject.API.Mappings
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Users, UsersDto>().ReverseMap();
+            CreateMap<User, UsersDto>().ReverseMap();
 
-            CreateMap<AddUsersRequestDto, Users>().ReverseMap();
+            CreateMap<AddUsersRequestDto, User>().ReverseMap();
 
-            CreateMap<AddTimeSheetRequestDto, TimeSheets>().ReverseMap();
+            CreateMap<AddTimeSheetRequestDto, TimeSheet>().ReverseMap();
 
-            CreateMap<TimeSheets, TimeSheetDto>().ReverseMap();
+            CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
 
-            CreateMap<UpdateTimeSheetRequestDto, TimeSheets>().ReverseMap();
+            CreateMap<UpdateTimeSheetRequestDto, TimeSheet>().ReverseMap();
 
-            CreateMap<AddTaskRequestDto, Tasks>().ReverseMap();
+            CreateMap<AddTaskRequestDto, Models.Domain.Tasks>().ReverseMap();
 
-            CreateMap<Tasks, TaskDto>().ReverseMap();
+            CreateMap<Models.Domain.Tasks, TaskDto>().ReverseMap();
 
-            CreateMap<UpdateTaskRequestDto, Tasks>().ReverseMap();
+            CreateMap<UpdateTaskRequestDto, Models.Domain.Tasks>().ReverseMap();
 
-            CreateMap<AddClientRequestDto, Clients>().ReverseMap();
+            CreateMap<AddClientRequestDto, Client>().ReverseMap();
 
-            CreateMap<Clients, ClientDto>().ReverseMap();
+            CreateMap<Client, ClientDto>().ReverseMap();
 
-            CreateMap<UpdateClientRequestDto, Clients>().ReverseMap();
+            CreateMap<UpdateClientRequestDto, Client>().ReverseMap();
 
             CreateMap<AddProjectRequestDto, Project>().ReverseMap();
 

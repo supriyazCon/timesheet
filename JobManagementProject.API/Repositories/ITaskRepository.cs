@@ -5,7 +5,7 @@ namespace JobManagementProject.API.Repositories
 {
     public interface ITaskRepository
     {
-        Task<Tasks> CreateAsync(Tasks task);
+        Task<Tasks> CreateAsync(Models.Domain.Tasks task);
         Task<ProjectTask> CreateTaskProjectAsync(ProjectTask taskProject);
         Task<List<Tasks>> GetAllAsync();
         Task<List<ProjectTask>> GetAllTaskProjectAsync(string? filterOn = null, string? filterQuery = null/*,

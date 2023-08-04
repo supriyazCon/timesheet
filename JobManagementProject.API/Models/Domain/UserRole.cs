@@ -2,12 +2,12 @@
 
 namespace JobManagementProject.API.Models.Domain
 {
-    public class UserRoles : CommonEntity
+    public class UserRole : CommonEntity
     {
        [Key]
-        public Guid UserRoleId { get; set; }
-        [Display(Name = "UserRoles Name")]
+
         [Required]
+        public Guid UserRoleId { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
        

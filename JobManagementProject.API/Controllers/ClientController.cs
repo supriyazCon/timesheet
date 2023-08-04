@@ -56,14 +56,15 @@ namespace JobManagementProject.API.Controllers
             }
 
 
-          
+
         }
+
 
         // Get All Clients by ID
         // GET : /api/clients/{id}
         [HttpGet]
         [Route("{id:Guid}")]
-       // [Authorize(Roles = "ProjectManager, DeliveryManager")]
+        //[Authorize(Roles = "ProjectManager, DeliveryManager")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var clientDomainModel = await clientRepository.GetByIdAsync(id);
@@ -87,17 +88,17 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Create([FromBody] AddClientRequestDto addClientRequestDto)
         {
             // Map DTO to Domain Model
-           var clientDomainModel = mapper.Map<Clients>(addClientRequestDto);
+           var clientDomainModel = mapper.Map<Client>(addClientRequestDto);
 
              await clientRepository.CreateAsync(clientDomainModel);
 
-
-            // Check if the client name is unique before saving
-            if (dbContext.Clients.Any(c => c.ClientName == addClientRequestDto.ClientName))
+            // Check if a client with the same name already exists
+            if (dbContext.Client.Any(c => c.ClientName == clientDomainModel.ClientName))
             {
-                ModelState.AddModelError("ClientName", "Client name must be unique.");
+                ModelState.AddModelError("ClientName", "A client with this name already exists.");
                 return BadRequest(ModelState);
             }
+
 
             // Map Domain Model To DTO
             return Ok(mapper.Map<ClientDto>(clientDomainModel));
@@ -117,7 +118,7 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateClientRequestDto updateClientRequestDto)
         {
             // Map DTO to Domain Model
-            var clientDomainModel = mapper.Map<Clients>(updateClientRequestDto);
+            var clientDomainModel = mapper.Map<Client>(updateClientRequestDto);
 
             clientDomainModel= await clientRepository.UpdateAsync(id, clientDomainModel);
 
@@ -146,10 +147,7 @@ namespace JobManagementProject.API.Controllers
                 return NotFound();
             }
 
-            // Soft delete by setting the IsDeleted flag to true
-            deletedClientDomainModel.IsDeleted = true;
-            dbContext.SaveChanges();
-
+           
 
             // Map Domain Model to DTO
             return Ok(mapper.Map<ClientDto>(deletedClientDomainModel));

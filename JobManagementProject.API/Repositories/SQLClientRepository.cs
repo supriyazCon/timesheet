@@ -13,42 +13,44 @@ namespace JobManagementProject.API.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<Clients> CreateAsync(Clients Client)
+        public async Task<Client> CreateAsync(Client Client)
         {
             Client.CreatedDate = DateTime.Now;
             Client.UpdatedDate = DateTime.Now;
-            await dbContext.Clients.AddAsync(Client);
+            await dbContext.Client.AddAsync(Client);
             await dbContext.SaveChangesAsync();
             return Client;
         }
 
-        public async Task<Clients?> DeleteAsync(Guid id)
+        public async Task<Client?> DeleteAsync(Guid id)
         {
-            var existingclient = await dbContext.Clients.FirstOrDefaultAsync(x => x.ClientId == id);
+            var existingclient = await dbContext.Client.FirstOrDefaultAsync(x => x.ClientId == id);
 
             if (existingclient == null) 
             {
                 return null;
             }
 
-            dbContext.Clients.Remove(existingclient);
+            existingclient.IsDeleted = true;
+
+            dbContext.Client.Update(existingclient);
             await dbContext.SaveChangesAsync();
             return existingclient;
         }
 
-        public async Task<List<Clients>> GetAllAsync()
+        public async Task<List<Client>> GetAllAsync()
         {
-           return await dbContext.Clients.ToListAsync();
+           return await dbContext.Client.ToListAsync();
         }
 
-        public async Task<Clients?> GetByIdAsync(Guid id)
+        public async Task<Client?> GetByIdAsync(Guid id)
         {
-            return await dbContext.Clients.FirstOrDefaultAsync(x => x.ClientId == id);
+            return await dbContext.Client.FirstOrDefaultAsync(x => x.ClientId == id);
         }
 
-        public async Task<Clients?> UpdateAsync(Guid id, Clients Client)
+        public async Task<Client?> UpdateAsync(Guid id, Client Client)
         {
-            var existingClient = await dbContext.Clients.FirstOrDefaultAsync(x => x.ClientId == id);
+            var existingClient = await dbContext.Client.FirstOrDefaultAsync(x => x.ClientId == id);
             
             if (existingClient == null)
             {

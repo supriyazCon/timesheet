@@ -4,28 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobManagementProject.API.Controllers
 {
-    [Route("api/country")]
+    [Route("api/projectmanager")]
     [ApiController]
-    public class CountryController : ControllerBase
+    public class ProjectMangerController : ControllerBase
     {
         private readonly JobDbContext dbContext;
 
-        public CountryController(JobDbContext dbContext)
+        public ProjectMangerController(JobDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-
         [HttpGet]
-        public IActionResult GetCountry()
+        public IActionResult GetAll() 
         {
-            var country = dbContext.Country.ToList();
-            return Ok(country);
+            var projectmanager = dbContext.ProjectManager.ToList();
+            return Ok(projectmanager);
         }
 
+
     }
-
-
-   
-
 }

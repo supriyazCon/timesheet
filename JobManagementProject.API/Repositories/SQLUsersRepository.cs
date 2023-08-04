@@ -13,18 +13,18 @@ namespace JobManagementProject.API.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<Users> CreateAsync(Users users)
+        public async Task<User> CreateAsync(User users)
         {
             users.CreatedDate = DateTime.Now;
             users.UpdatedDate = DateTime.Now;
-            await dbContext.Users.AddAsync(users);
+            await dbContext.User.AddAsync(users);
             await dbContext.SaveChangesAsync();
             return users;
         }
 
-        public async Task<List<Users>> GetAllAsync()
+        public async Task<List<User>> GetAllAsync()
         {
-           return await dbContext.Users.ToListAsync();
+           return await dbContext.User.ToListAsync();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace JobManagementProject.API.Controllers
         [HttpGet]
         public IActionResult GetCurrencies()
         {
-            var currencies = dbContext.Currencies.ToList();
+            var currencies = dbContext.Currency.ToList();
             return Ok(currencies);
         }
 

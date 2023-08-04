@@ -13,42 +13,46 @@ namespace JobManagementProject.API.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<TimeSheets> CreateAsync(TimeSheets timeSheets)
+        public async Task<TimeSheet> CreateAsync(TimeSheet timeSheets)
         {
             timeSheets.CreatedDate = DateTime.Now;
             timeSheets.UpdatedDate = DateTime.Now;
-            await dbContext.TimeSheets.AddAsync(timeSheets);
+            await dbContext.TimeSheet.AddAsync(timeSheets);
             await dbContext.SaveChangesAsync();
             return timeSheets;
         }
 
-        public async Task<TimeSheets?> DeleteAsync(Guid id)
+        public async Task<TimeSheet?> DeleteAsync(Guid id)
         {
-            var existingTimesheets = await dbContext.TimeSheets.FirstOrDefaultAsync(x => x.Id == id);  
+            var existingTimesheets = await dbContext.TimeSheet.FirstOrDefaultAsync(x => x.Id == id);  
             
             if (existingTimesheets == null)
             {
                 return null;
             }
 
-            dbContext.TimeSheets.Remove(existingTimesheets);
+            existingTimesheets.IsDeleted = true;
+
+            dbContext.TimeSheet.Update(existingTimesheets);
+
+            dbContext.TimeSheet.Remove(existingTimesheets);
             await dbContext.SaveChangesAsync();
             return existingTimesheets;
         }
 
-        public async Task<List<TimeSheets>> GetAllAsync()
+        public async Task<List<TimeSheet>> GetAllAsync()
         {
-            return await dbContext.TimeSheets.ToListAsync();
+            return await dbContext.TimeSheet.ToListAsync();
         }
 
-        public async Task<TimeSheets> GetByDateAsync(DateTime date)
+        public async Task<TimeSheet> GetByDateAsync(DateTime date)
         {
-            return await dbContext.TimeSheets.FirstOrDefaultAsync(x => x.CreatedDate == date); 
+            return await dbContext.TimeSheet.FirstOrDefaultAsync(x => x.CreatedDate == date); 
         }
 
-        public async Task<TimeSheets?> UpdateAsync(Guid id, TimeSheets timeSheets)
+        public async Task<TimeSheet?> UpdateAsync(Guid id, TimeSheet timeSheets)
         {
-            var existingTimeSheets = await dbContext.TimeSheets.FirstOrDefaultAsync(x => x.Id == id);
+            var existingTimeSheets = await dbContext.TimeSheet.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existingTimeSheets == null)
             {

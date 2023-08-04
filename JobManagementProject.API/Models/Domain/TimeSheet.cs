@@ -2,7 +2,7 @@
 
 namespace JobManagementProject.API.Models.Domain
 {
-    public class TimeSheets : CommonEntity
+    public class TimeSheet : CommonEntity
     {
         [Key]
         public Guid  Id { get; set; }

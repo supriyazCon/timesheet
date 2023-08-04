@@ -18,7 +18,7 @@ namespace JobManagementProject.API.Repositories
         public async Task<Tasks> CreateAsync(Tasks task)
         {
 
-            await dbContext.Tasks.AddAsync(task);
+            await dbContext.Task.AddAsync(task);
             await dbContext.SaveChangesAsync();
             return task;
         }
@@ -32,14 +32,17 @@ namespace JobManagementProject.API.Repositories
 
         public async Task<Tasks?> DeleteAsync(Guid id)
         {
-            var existingTask = await dbContext.Tasks.FirstOrDefaultAsync(x => x.TaskId == id);
+            var existingTask = await dbContext.Task.FirstOrDefaultAsync(x => x.TaskId == id);
 
             if (existingTask == null)
             {
                 return null;
             }
 
-            dbContext.Tasks.Remove(existingTask);
+
+            existingTask.IsDeleted = true;
+
+            dbContext.Task.Update(existingTask);
             await dbContext.SaveChangesAsync();
             return existingTask;
 
@@ -61,7 +64,7 @@ namespace JobManagementProject.API.Repositories
 
         public async Task<List<Tasks>> GetAllAsync()
         {
-            return await dbContext.Tasks.ToListAsync();
+            return await dbContext.Task.ToListAsync();
         }
 
         public async Task<List<ProjectTask>> GetAllTaskProjectAsync(string? filterOn = null, string? filterQuery = null/*,
@@ -103,9 +106,9 @@ namespace JobManagementProject.API.Repositories
 
         }
 
-        public async Task<Tasks?> UpdateAsync(Guid id, Tasks task)
+        public async Task<Tasks?> UpdateAsync(Guid id, Models.Domain.Tasks task)
         {
-            var existingTask = await dbContext.Tasks.FirstOrDefaultAsync(x => x.TaskId == id);
+            var existingTask = await dbContext.Task.FirstOrDefaultAsync(x => x.TaskId == id);
 
             if (existingTask == null)
             {

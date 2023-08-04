@@ -4,8 +4,8 @@ namespace JobManagementProject.API.Repositories
 {
     public interface IUsersRepository
     {
-        Task<List<Users>> GetAllAsync();
+        Task<List<User>> GetAllAsync();
 
-        Task<Users> CreateAsync(Users users);
+        Task<User> CreateAsync(User users);
     }
 }

@@ -31,7 +31,9 @@ namespace JobManagementProject.API.Repositories
                 return null;
             }
 
-            dbContext.Project.Remove(existingProject);
+            existingProject.IsDeleted = true;
+
+            dbContext.Project.Update(existingProject);
             await dbContext.SaveChangesAsync();
             return existingProject;
         }

@@ -7,15 +7,14 @@ namespace JobManagementProject.API.Models.DTO
     {
 
         [Key]
-        public Guid ProjectId { get; set; }
-        [Display(Name = "Project Name")]
-        [Required]
-        public string ProjectName { get; set; }
 
-        /*[Display(Name = "Clients")]
+        [Required]
+        public Guid ProjectId { get; set; }
+
+        public string ProjectName { get; set; }
         public Guid ClientId { get; set; }
-        [ForeignKey(nameof(ClientId))]
-        public virtual Clients? Clients { get; set; }*/
+        [ForeignKey("ClientId")]
+        public virtual Client Client { get; set; }
         public int ProjectCost { get; set; }
         public int ProjectHeadId { get; set; }
         public int ProjectManagerId { get; set; }

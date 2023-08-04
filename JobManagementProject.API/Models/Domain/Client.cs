@@ -2,12 +2,12 @@
 
 namespace JobManagementProject.API.Models.Domain
 {
-    public class Clients : CommonEntity
+    public class Client : CommonEntity
     {
         [Key]
-        public Guid ClientId { get; set; }
-        [Display(Name = "Clients Name")]
+
         [Required]
+        public Guid ClientId { get; set; }
         public string ClientName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,7 +17,7 @@ namespace JobManagementProject.API.Models.Domain
         public string Fax { get; set; }
         public int CurrencyId { get; set; }
         public int BillingMethodId { get; set; }
-       
+
     }
 
 }

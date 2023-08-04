@@ -5,9 +5,10 @@ namespace JobManagementProject.API.Models.DTO
     public class ClientDto
     {
         [Key]
-        public Guid ClientId { get; set; }
-        [Display(Name = "Clients Name")]
+
         [Required]
+        public Guid ClientId { get; set; }
+  
         public string ClientName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
