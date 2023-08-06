@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6a44cb89.css",
+    "main.js": "/static/js/main.d4cb067c.js",
+    "static/js/787.2da55f20.chunk.js": "/static/js/787.2da55f20.chunk.js",
+    "static/media/dashboard.jpg": "/static/media/dashboard.fc46ed10f3ad40f81578.jpg",
+    "static/media/zoho.png": "/static/media/zoho.eeb2c40e66f382d25161.png",
+    "static/media/noRecordsFound.png": "/static/media/noRecordsFound.f0ccb189b59b661f6eb4.png",
+    "index.html": "/index.html",
+    "main.6a44cb89.css.map": "/static/css/main.6a44cb89.css.map",
+    "main.d4cb067c.js.map": "/static/js/main.d4cb067c.js.map",
+    "787.2da55f20.chunk.js.map": "/static/js/787.2da55f20.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6a44cb89.css",
+    "static/js/main.d4cb067c.js"
+  ]
+}

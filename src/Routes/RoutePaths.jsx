@@ -14,7 +14,7 @@ import Login from '../Components/Login/Login';
 
 function RoutePaths() {
   const { LOGIN, DASHBOARD, CLIENTS, ADD_CLIENT, PROJECTS, ADD_PROJECT, TIMESHEETS, ADD_JOB, JOBS } = ROUTES;
-  const isloggedIn = useSelector((state) => state.loginSuccessSlice.isloggedIn);
+  // const isloggedIn = useSelector((state) => state.loginSuccessSlice.isloggedIn);
 
 
   return (

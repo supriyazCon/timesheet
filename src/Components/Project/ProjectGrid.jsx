@@ -53,7 +53,7 @@ function ProjectGrid() {
     setDialogOpen(false);
   };
 
-const topComponents = [
+  const topComponents = [
     {
       control: SELECT_BOX,
       select: true,
@@ -88,7 +88,7 @@ const topComponents = [
       columnWidth: 1.5
     }
   ];
-  
+
   const columnData = [
     // { field: 'id', headerName: 'Id', width: 70 },
     { field: 'projectName', headerName: 'Project Name', width: 300 },
@@ -108,7 +108,7 @@ const topComponents = [
               // groupStyle: { paddingTop: '0rem', marginLeft: '0.6rem' },
               // handleClickIcon: () => handleEdit(params.id)
             }}
-            />
+          />
         </div>
       )
     },
@@ -145,7 +145,7 @@ const topComponents = [
               // groupStyle: { paddingTop: '0rem', marginLeft: '0.6rem' },
               handleClickIcon: () => handleDeleteClick(params.row.projectId)
             }}
-            />
+          />
         </div>
       )
     }
@@ -161,7 +161,7 @@ const topComponents = [
   useEffect(() => {
     dispatch(getProject());
   }, [deleteId]);
-  
+
   let snackbarMessage;
   if (deleteProjectError !== null) {
     snackbarMessage = 'Something went wrong. Please try again.';
@@ -175,7 +175,7 @@ const topComponents = [
         message={snackbarMessage}
         severity={deleteProjectError !== null ? 'error' : 'success'}
         handleClose={handleSnackbarClose}
-        />
+      />
       <ReusableDialog
         open={dialogOpen}
         onConfirm={handleConfirm}

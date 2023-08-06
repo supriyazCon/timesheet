@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,13 +9,26 @@ import { ROUTES } from '../../Routes/Paths';
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authError = useSelector((state) => state?.auth?.error);
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
   const [usernameError, setUsernameError] = useState('');
+  const [usernamePasswordError, setUsernamePasswordError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const loginError = useSelector((state) => state.loginSuccess.error)
+  const isloggedIn = useSelector((state) => state.loginSuccess.isloggedIn)
+
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -37,38 +50,29 @@ function Login() {
       return;
     }
 
-    try {
-      const payload = {
-        username: formData.username, // Use the user-provided username
-        password: formData.password, // Use the user-provided password
-      }
 
-      const response = await fetch('http://10.235.3.8:8021/api/auth/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+    // if (formData.password === '' || formData.username === '') {
+    //   setUsernamePasswordError('Please enter username and password');
+    //   return;
+    // }
 
-      const resData = await response.json();
 
-      if (response.status === 200) {
-        // Successful login
-        dispatch(loginSuccess(resData));
-        navigate(ROUTES.DASHBOARD); // Navigate to the Dashboard page
-
-      } else {
-        // Failed login
-        // dispatch(loginFailure('Invalid username or password.'));
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    dispatch(loginSuccess(formData))
+    alert("login error", loginError)
   };
-
+  useEffect(() => {
+    if (loginError === null && isloggedIn === true) {
+      navigate(ROUTES.DASHBOARD)
+    }
+  }, [loginError, isloggedIn])
   return (
     <Container component="main" maxWidth="xs">
+      {/* <ReusableSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={addClientData == null && editClientData === null ? 'error' : 'success'}
+        handleClose={handleSnackbarClose}
+      /> */}
       <Box
         sx={{
           display: 'flex',
@@ -114,11 +118,12 @@ function Login() {
             margin="normal"
             variant="outlined"
           />
-          {authError && (
+          {/* {authErrorMessage && (
             <Typography sx={{ color: 'error.main', mt: 1 }} align="center">
-              {authError}
+              {authErrorMessage}
             </Typography>
-          )}
+          )} */}
+
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
             Login
           </Button>

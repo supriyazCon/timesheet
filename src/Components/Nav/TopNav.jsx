@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -10,10 +12,15 @@ import { ROUTES } from '../../Routes/Paths';
 import { COMPONENTS } from '../../Utils/Constants';
 import zoho from '../../Assets/zoho.png';
 import RenderComponents from '../RenderComponents/RenderComponents';
+import { loginSuccessActions } from '../../Redux/login';
+
+
 
 function TopNav() {
   const { TEXT_FIELD, ICON } = COMPONENTS;
+  const dispatch = useDispatch();
   const iconColor = grey[800];
+  const navigate = useNavigate();
   const icons = [
     {
       control: ICON,
@@ -31,13 +38,24 @@ function TopNav() {
       color: iconColor,
       handleClickIcon: () => alert('ADD')
     },
+    // {
+    //   control: ICON,
+    //   iconName: <AccountCircleIcon />,
+    //   tooltipTitle: 'Profile',
+    //   // groupStyle: { paddingTop: '0rem', marginLeft: '0.6rem' },
+    //   color: iconColor,
+    //   handleClickIcon: () => alert('ADD')
+    // }
     {
       control: ICON,
-      iconName: <AccountCircleIcon />,
-      tooltipTitle: 'Profile',
+      iconName: <PowerSettingsNewIcon />,
+      tooltipTitle: 'LogOut',
       // groupStyle: { paddingTop: '0rem', marginLeft: '0.6rem' },
       color: iconColor,
-      handleClickIcon: () => alert('ADD')
+      handleClickIcon: () => {
+        dispatch(loginSuccessActions.logOut())
+        navigate(ROUTES.LOGIN)
+      }
     }
   ];
   return (

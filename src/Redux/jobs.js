@@ -90,9 +90,9 @@ const addJobSlice = createSlice({
 export const { actions: addJobActions, reducer: addJobReducer, selectors: addJobSelectors } = addJobSlice;
 
 export const editJob = createAsyncThunk('editJob', async (data) => {
-  const { id, ...rest } = data; // Exclude headers from the payload
+  const { taskId, ...rest } = data; // Exclude headers from the payload
   // console.log('id', id);
-  const response = await axios.put(`http://10.235.3.8:8021/api/task/${id}`, rest);
+  const response = await axios.put(`http://10.235.3.8:8021/api/task/${taskId}`, rest);
   // console.log(response);
   return response.data;
 });

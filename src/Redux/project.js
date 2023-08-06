@@ -51,7 +51,8 @@ export const addProject = createAsyncThunk('addProject', async (data) => {
     method: 'POST',
     headers,
     body: JSON.stringify(data)
-  });
+  }).then(res => res.json())
+    .then(res => console.log(res));
 
   const resData = response.ok ? await response.json() : null
   return resData

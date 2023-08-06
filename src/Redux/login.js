@@ -1,32 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../Routes/Paths';
 
 
 export const loginSuccess = createAsyncThunk('loginSuccess', async (data) => {
+  console.log(data, "data")
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': '*',
-    'Access-Control-Allow-Headers': '*'
-  };
 
+  console.log("tast")
   const response = await fetch('http://10.235.3.8:8021/api/auth/api/login', {
     method: 'POST',
-    headers,
-    body: JSON.stringify(data)
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   });
-  // console.log(response)
-  const resData = response.ok ? await response.json() : null
-  return resData
+  let snackbarMessage;
+  const resData = await response.json();
+  console.log(resData, "resData")
+  if (response.status === 200) {
+    alert("Logged in Successfully!!")
+  } else {
+
+    console.log("error")
+  }
 });
 
-const loginFailure = (state, action) => {
-  state.loading = false;
-  state.error = action.payload;
-  state.isloggedIn = false;
-  state.token = '';
-};
 const loginSuccessSlice = createSlice({
   name: 'loginSuccessSlice',
   initialState: {
@@ -37,8 +37,9 @@ const loginSuccessSlice = createSlice({
     token: ""
   },
   reducers: {
-    login(state, action) {
-      state.isloggedIn = true;
+    logOut(state, action) {
+      state.isloggedIn = false;
+      state.token = ""
     }
   },
   extraReducers: (builder) => {
@@ -48,8 +49,10 @@ const loginSuccessSlice = createSlice({
       })
       .addCase(loginSuccess.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.token = action.payload?.jwtToken;
         state.loading = false;
         state.error = null;
+        state.isloggedIn = true;
       })
       .addCase(loginSuccess.rejected, (state, action) => {
         state.loading = false;

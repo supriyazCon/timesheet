@@ -22,7 +22,7 @@ function AddJob() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [emptyPayload, setEmptyPayload] = useState({
     taskName: '',
-    project: '',
+    projectId: '',
     // startDate: '',
     // endDate: '',
     // estimatedHours: 0,
@@ -31,6 +31,7 @@ function AddJob() {
     // users: [],
   });
   const [payload, setPayload] = useState({ ...emptyPayload });
+  console.log(payload, "payload")
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const updatePayload = (pairs) => setPayload((prevPayload) => ({ ...prevPayload, ...pairs }));
@@ -40,6 +41,9 @@ function AddJob() {
   const addJobData = useSelector(state => state.addJob.data)
   const editJobData = useSelector(state => state.editJob?.data)
   const projects = projectData.map((el, ind) => ({ 'projectId': ind + 1, 'name': el.projectName }));
+  // const projects = projectData.map((el,ind) => ({ value: el.projectId, label: el.projectName }));
+  console.log(projectData, "project data")
+
 
   const jobLabels = [
     {
@@ -88,7 +92,8 @@ function AddJob() {
       label: 'Select Project',
       options: projects,
       isSelecteAllAllow: false,
-      columnWidth: 6
+      columnWidth: 6,
+      onchange: (event) => setPayload({ ...payload, projectId: event.target.value })
     },
 
   ];
@@ -148,25 +153,28 @@ function AddJob() {
 
   const handleAddJob = () => {
     const data = payload;
+    if (!data.taskName) {
+      return; // Exit early and do not proceed with the submission
+    }
+
     if (isUpdate) {
       dispatch(editJob(data));
     } else {
       dispatch(addJob(data));
     }
     setSnackbarOpen(true);
+    setPayload(emptyPayload);
     updatePayload(emptyPayload)
     setTimeout(() => {
       navigate(JOBS);
     }, 2000);
 
   };
-
+  const isSubmitDisabled = !payload.taskName;
   const handleChangeData = (key, val, ind) => {
     if (key) {
       const updateFields = { [key]: val };
-      if (key === 'estimatedHours' || key === 'loggedHours') {
-        updateFields[key] = parseInt(val, 10);
-      } else {
+      if (key === 'projectId') {
         updateFields[key] = val;
       }
       updatePayload({ ...updateFields });
@@ -266,7 +274,8 @@ function AddJob() {
         }}
       >
         {actionButtons?.map((comp, ind) => (
-          <RenderComponents key={ind} metaData={comp} ind={ind} />
+          <RenderComponents key={ind} metaData={{ ...comp, disabled: isSubmitDisabled }} // Pass the disabled prop to the button component
+            ind={ind} />
         ))}
       </Grid>
     </Grid>

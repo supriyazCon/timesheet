@@ -100,7 +100,9 @@ function JobGrid() {
   ];
 
   const handleEdit = (id) => {
-    const tableData = jobData.find((item) => item.id === id);
+    console.log(id, "idJOb")
+    const tableData = jobData.find((item) => item.taskId === id);
+    console.log('tableData', tableData);
     navigate(ADD_JOB, { state: tableData });
   };
 

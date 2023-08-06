@@ -18,7 +18,6 @@ const rootReducer = combineReducers({
   editJob: editJobReducer,
   deleteJob: deleteJobReducer,
   loginSuccess: loginSuccessReducer,
-  loginSuccessSlice: loginSuccessReducer,
 });
 
 export default rootReducer;
