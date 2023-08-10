@@ -150,13 +150,51 @@ namespace JobManagementProject.API.Migrations
                     b.ToTable("Currency");
                 });
 
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.DailyLog", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Minutes")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TaskName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorkDate")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("DailyLog");
+                });
+
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.DeliveryManager", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DeliveryManagerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryManagerId"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -166,7 +204,7 @@ namespace JobManagementProject.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("DeliveryManagerId");
 
                     b.ToTable("DeliveryManager");
                 });
@@ -260,11 +298,11 @@ namespace JobManagementProject.API.Migrations
 
             modelBuilder.Entity("JobManagementProject.API.Models.Domain.ProjectManager", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProjectManagerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectManagerId"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -274,7 +312,7 @@ namespace JobManagementProject.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProjectManagerId");
 
                     b.ToTable("ProjectManager");
                 });
@@ -524,6 +562,47 @@ namespace JobManagementProject.API.Migrations
                     b.HasKey("UserRoleId");
 
                     b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("JobManagementProject.API.Models.Domain.WeeklyLog", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Minutes")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TaskName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("WeeklyLog");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

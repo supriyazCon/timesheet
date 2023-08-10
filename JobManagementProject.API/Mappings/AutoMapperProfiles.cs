@@ -18,11 +18,11 @@ namespace JobManagementProject.API.Mappings
 
             CreateMap<UpdateTimeSheetRequestDto, TimeSheet>().ReverseMap();
 
-            CreateMap<AddTaskRequestDto, Models.Domain.Tasks>().ReverseMap();
+            CreateMap<AddTaskRequestDto, Tasks>().ReverseMap();
 
-            CreateMap<Models.Domain.Tasks, TaskDto>().ReverseMap();
+            CreateMap<Tasks, TaskDto>().ReverseMap();
 
-            CreateMap<UpdateTaskRequestDto, Models.Domain.Tasks>().ReverseMap();
+            CreateMap<UpdateTaskRequestDto, Tasks>().ReverseMap();
 
             CreateMap<AddClientRequestDto, Client>().ReverseMap();
 
@@ -40,7 +40,10 @@ namespace JobManagementProject.API.Mappings
 
             CreateMap<AddProjectTaskRequestDto, ProjectTask>().ReverseMap();
 
-            //CreateMap<Currency,  CurrencyDto>().ReverseMap();
+            CreateMap<AddLogRequestDto, DailyLog>().ReverseMap();
+
+            CreateMap<UpdateDailyLogRequestDto, DailyLog>().ReverseMap();
+
         }
     }
 }

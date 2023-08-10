@@ -34,13 +34,15 @@ namespace JobManagementProject.API.Repositories
             existingProject.IsDeleted = true;
 
             dbContext.Project.Update(existingProject);
+            dbContext.ChangeTracker.HasChanges();
             await dbContext.SaveChangesAsync();
             return existingProject;
         }
 
         public async Task<List<Project>> GetAllAsync()
         {
-            return await dbContext.Project.ToListAsync();
+            //return await dbContext.Project.ToListAsync();
+            return await dbContext.Project.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<Project?> GetByIdAsync(Guid id)

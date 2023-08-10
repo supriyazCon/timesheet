@@ -31,16 +31,16 @@ namespace JobManagementProject.API.Repositories
                 return null;
             }
 
-            existingclient.IsDeleted = true;
+            existingclient.IsDeleted = false;
 
-            dbContext.Client.Update(existingclient);
+            dbContext.Client.Remove(existingclient);
             await dbContext.SaveChangesAsync();
             return existingclient;
         }
 
         public async Task<List<Client>> GetAllAsync()
         {
-           return await dbContext.Client.ToListAsync();
+            return await dbContext.Client.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<Client?> GetByIdAsync(Guid id)

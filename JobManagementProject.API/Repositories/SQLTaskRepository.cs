@@ -42,7 +42,7 @@ namespace JobManagementProject.API.Repositories
 
             existingTask.IsDeleted = true;
 
-            dbContext.Task.Update(existingTask);
+            dbContext.Task.Remove(existingTask);
             await dbContext.SaveChangesAsync();
             return existingTask;
 
@@ -64,7 +64,7 @@ namespace JobManagementProject.API.Repositories
 
         public async Task<List<Tasks>> GetAllAsync()
         {
-            return await dbContext.Task.ToListAsync();
+            return await dbContext.Task.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<List<ProjectTask>> GetAllTaskProjectAsync(string? filterOn = null, string? filterQuery = null/*,

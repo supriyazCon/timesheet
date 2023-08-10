@@ -42,7 +42,7 @@ namespace JobManagementProject.API.Repositories
 
         public async Task<List<TimeSheet>> GetAllAsync()
         {
-            return await dbContext.TimeSheet.ToListAsync();
+            return await dbContext.TimeSheet.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<TimeSheet> GetByDateAsync(DateTime date)

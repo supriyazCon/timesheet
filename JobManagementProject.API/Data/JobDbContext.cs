@@ -30,6 +30,8 @@ namespace JobManagementProject.API.Data
         public DbSet<DeliveryManager> DeliveryManager { get; set; }
         public DbSet<ProjectManager> ProjectManager { get; set; }
         public DbSet<Country> Country { get; set; }
+        public DbSet<DailyLog> DailyLog { get; set; }
+        public DbSet<WeeklyLog> WeeklyLog { get; set; }
 
 
 
@@ -71,29 +73,11 @@ namespace JobManagementProject.API.Data
             };
 
             builder.Entity<IdentityRole>().HasData(roles);
-          //builder.Entity<CommonEntity>().HasQueryFilter(e => !e.IsDeleted);
+          
 
             
 
         }
-
-       /* public override int  SaveChanges()
-        {
-            foreach (var entry in ChangeTracker.Entries())
-            {
-                var entity = entry.Entity;
-
-                if(entry.State == EntityState.Deleted)
-                {
-                    entry.State = EntityState.Modified;
-
-
-                    entity.GetType().GetProperty("IsDeleted").SetValue(entity, 'D');
-                }
-            }
-
-            return base.SaveChanges();
-        }*/
 
 
     }

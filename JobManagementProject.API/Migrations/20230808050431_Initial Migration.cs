@@ -122,17 +122,36 @@ namespace JobManagementProject.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DailyLog",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WorkDate = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TaskName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Hours = table.Column<int>(type: "int", nullable: false),
+                    Minutes = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyLog", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DeliveryManager",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DeliveryManagerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryManager", x => x.Id);
+                    table.PrimaryKey("PK_DeliveryManager", x => x.DeliveryManagerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,14 +176,14 @@ namespace JobManagementProject.API.Migrations
                 name: "ProjectManager",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ProjectManagerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectManager", x => x.Id);
+                    table.PrimaryKey("PK_ProjectManager", x => x.ProjectManagerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,6 +236,26 @@ namespace JobManagementProject.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => x.UserRoleId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WeeklyLog",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TaskName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Hours = table.Column<int>(type: "int", nullable: false),
+                    Minutes = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeeklyLog", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -392,7 +431,13 @@ namespace JobManagementProject.API.Migrations
                 {
                     TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TaskName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -568,6 +613,9 @@ namespace JobManagementProject.API.Migrations
                 name: "Currency");
 
             migrationBuilder.DropTable(
+                name: "DailyLog");
+
+            migrationBuilder.DropTable(
                 name: "DeliveryManager");
 
             migrationBuilder.DropTable(
@@ -587,6 +635,9 @@ namespace JobManagementProject.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRole");
+
+            migrationBuilder.DropTable(
+                name: "WeeklyLog");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
