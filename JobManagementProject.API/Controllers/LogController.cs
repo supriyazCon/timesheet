@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobManagementProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/log")]
     [ApiController]
-    public class DailyLogController : ControllerBase
+    public class LogController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IDailyLogRepository dailyLogRepository;
 
-        public DailyLogController(IMapper mapper, IDailyLogRepository dailyLogRepository)
+        public LogController(IMapper mapper, IDailyLogRepository dailyLogRepository)
         {
             this.mapper = mapper;
             this.dailyLogRepository = dailyLogRepository;
@@ -39,8 +39,8 @@ namespace JobManagementProject.API.Controllers
         //Create DalilyLog
         // POST : /api/dailylog
         [HttpPost]
-
-        public async Task<IActionResult> Create([FromBody] AddDailyLogRequestDto addDailyLogRequestDto)
+        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        public async Task<IActionResult> Create([FromBody] AddLogRequestDto addDailyLogRequestDto)
         {
 
             var daliyLogDomainModel = mapper.Map<DailyLog>(addDailyLogRequestDto);
@@ -55,6 +55,7 @@ namespace JobManagementProject.API.Controllers
         // PUT : /api/dailylog
         [HttpPut]
         [Route("{id:Guid}")]
+        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateDailyLogRequestDto updateDailyLogRequestDto)
         {
             var daliyLogDomainModel = mapper.Map<DailyLog>(updateDailyLogRequestDto);
@@ -68,6 +69,29 @@ namespace JobManagementProject.API.Controllers
 
             // Map Domain Model To DTO
             return Ok(mapper.Map<DailyLogDto>(daliyLogDomainModel));
+        }
+
+
+
+        // Delete a Client By Id
+        // DELETE : /api/clients/{id}
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var deleteddaliyLogDomainModel = await dailyLogRepository.DeleteAsync(id);
+
+            if (deleteddaliyLogDomainModel == null)
+            {
+                return NotFound();
+            }
+
+
+
+            // Map Domain Model to DTO
+            return Ok(mapper.Map<ClientDto>(deleteddaliyLogDomainModel));
         }
     }
 }

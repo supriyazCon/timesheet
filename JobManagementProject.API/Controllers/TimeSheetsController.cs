@@ -25,7 +25,7 @@ namespace JobManagementProject.API.Controllers
         // Get Daily TimeSheets
         // CET : /api/timesheets
         [HttpGet]
-        //[Authorize(Roles = "ProjectManager, DeliveryManager")]
+        //[Authorize(Roles = "GenericUser)]
         public async Task<IActionResult> GetAll()
         {
             var timeSheetDomainModel = await timeSheetRepository.GetAllAsync();
@@ -41,7 +41,7 @@ namespace JobManagementProject.API.Controllers
         // GET : /api/timesheet/{Date}
         [HttpGet]
         [Route("{date:DateTime}")]
-        //[Authorize(Roles = "ProjectManager, DeliveryManager")]
+        //[Authorize(Roles = "GenericUser")]
         public async Task<IActionResult> GetByDate([FromRoute] DateTime date)
         {
 
@@ -64,7 +64,7 @@ namespace JobManagementProject.API.Controllers
         // Create TimeSheets
         // POST: /api/timesheets
         [HttpPost]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "GenericUser")]
         public async Task<IActionResult> Create([FromBody] AddTimeSheetRequestDto addTimeSheetRequestDto)
         {
             // Map DTo to Domain Model 
@@ -82,7 +82,7 @@ namespace JobManagementProject.API.Controllers
         // UPDATE : /api/timesheet/{id}
         [HttpPut]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "GenericUser")]
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateTimeSheetRequestDto updateTimeSheetRequestDto)
         {
             // Map DTO to Domain Model
@@ -104,7 +104,7 @@ namespace JobManagementProject.API.Controllers
         // DELETE : /api/timesheets/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "GenericUser")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var deleteTimeSheetDomainModel = await timeSheetRepository.DeleteAsync(id);

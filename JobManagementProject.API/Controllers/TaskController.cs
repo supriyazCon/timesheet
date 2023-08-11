@@ -15,11 +15,13 @@ namespace JobManagementProject.API.Controllers
     {
         private readonly IMapper mapper;
         private readonly ITaskRepository taskRepository;
+        private readonly IProjectRepository projectRepository;
 
-        public TaskController(IMapper mapper, ITaskRepository taskRepository)
+        public TaskController(IMapper mapper, ITaskRepository taskRepository, IProjectRepository projectRepository)
         {
             this.mapper = mapper;
             this.taskRepository = taskRepository;
+            this.projectRepository = projectRepository;
         }
 
 
@@ -32,8 +34,35 @@ namespace JobManagementProject.API.Controllers
         {
             var tasksDomainModel = await taskRepository.GetAllAsync();
 
+
+            var taskDtos = new List<TaskDto>();
+
+            foreach (var taskDomainModel in tasksDomainModel)
+            {
+
+                var projectDetails = await projectRepository.GetByIdAsync(taskDomainModel.ProjectId);
+
+                // Map taskDomainModel to TaskDto
+                var taskDto = mapper.Map<TaskDto>(taskDomainModel);
+
+                // Map projectDetails to ProjectDto
+                var projectDto = mapper.Map<ProjectDto>(projectDetails);
+
+                // Assign the project DTO to the task's Project property
+                taskDto.Project = projectDto;
+
+                taskDtos.Add(taskDto);
+            }
+
+            return Ok(taskDtos);
+
+
+
+
+
+
             // Map Domain Model to DTO
-            return Ok(mapper.Map<List<TaskDto>>(tasksDomainModel));
+            // return Ok(mapper.Map<List<TaskDto>>(tasksDomainModel));
 
         }
 
@@ -61,7 +90,7 @@ namespace JobManagementProject.API.Controllers
         public async Task<IActionResult> Create([FromBody] AddTaskRequestDto addTaskRequestDto)
         {
             // Map DTO to Domain Model
-            var taskDomainModel = mapper.Map<Models.Domain.Tasks>(addTaskRequestDto);
+            var taskDomainModel = mapper.Map<Tasks>(addTaskRequestDto);
 
             await taskRepository.CreateAsync(taskDomainModel);
 

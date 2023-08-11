@@ -44,6 +44,8 @@ namespace JobManagementProject.API.Mappings
 
             CreateMap<UpdateDailyLogRequestDto, DailyLog>().ReverseMap();
 
+
+
         }
     }
 }

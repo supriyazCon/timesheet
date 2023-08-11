@@ -31,7 +31,7 @@ namespace JobManagementProject.API.Repositories
                 return null;
             }
 
-            existingclient.IsDeleted = false;
+            existingclient.IsDeleted = true;
 
             dbContext.Client.Remove(existingclient);
             await dbContext.SaveChangesAsync();

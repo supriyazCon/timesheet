@@ -7,5 +7,6 @@ namespace JobManagementProject.API.Models.DTO
         
         public string TaskName { get; set; }
         public Guid ProjectId { get; set; }
+        
     }
 }

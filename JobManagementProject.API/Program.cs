@@ -73,6 +73,7 @@ builder.Services.AddScoped<ITaskRepository, SQLTaskRepository>();
 builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
 builder.Services.AddScoped<IProjectRepository, SQLProjectRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IDailyLogRepository, SQLDailyLogRepository>();
 
 
 

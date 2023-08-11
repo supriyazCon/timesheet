@@ -83,7 +83,7 @@ namespace JobManagementProject.API.Controllers
         //Create Clients
         // POST : /api/clients
         [HttpPost]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "DeliveryManager")]
 
         public async Task<IActionResult> Create([FromBody] AddClientRequestDto addClientRequestDto)
         {
@@ -113,7 +113,7 @@ namespace JobManagementProject.API.Controllers
         // PUT : /api/clients/{id}
         [HttpPut]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "DeliveryManager")]
 
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateClientRequestDto updateClientRequestDto)
         {
@@ -136,7 +136,7 @@ namespace JobManagementProject.API.Controllers
         // DELETE : /api/clients/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "DeliveryManager, ProjectManager")]
+        //[Authorize(Roles = "DeliveryManager")]
 
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {

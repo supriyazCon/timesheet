@@ -64,6 +64,8 @@ namespace JobManagementProject.API.Repositories
 
         public async Task<List<Tasks>> GetAllAsync()
         {
+
+            //return await dbContext.Task.ToListAsync();
             return await dbContext.Task.Where(x => !x.IsDeleted).ToListAsync();
         }
 

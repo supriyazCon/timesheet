@@ -15,5 +15,7 @@ namespace JobManagementProject.API.Models.Domain
         public Guid ProjectId { get; set; }
         public virtual Project Project { get; set; }
 
+      
+
     }
 }

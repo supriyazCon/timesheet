@@ -1,6 +1,6 @@
 ﻿namespace JobManagementProject.API.Models.DTO
 {
-    public class AddDailyLogRequestDto
+    public class AddLogRequestDto
     {
         public string ProjectName { get; set; }
         public string TaskName { get; set; }
