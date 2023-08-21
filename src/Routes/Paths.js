@@ -5,6 +5,8 @@ export const ROUTES = {
   PROJECTS: '/projects',
   ADD_PROJECT: '/addproject',
   TIMESHEETS: '/timesheets',
+  TIMELOGS: '/timelogs',
+  ADD_TIMELOG: '/addtimelog',
   ADD_JOB: '/addjob',
   JOBS: '/jobs',
   LOGIN: '/'

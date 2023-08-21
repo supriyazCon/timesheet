@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../../Redux/login';
 import { ROUTES } from '../../Routes/Paths';
+import zohoImage from '../../Assets/images/zoho-logo.png'
 // Other imports...
 
 function Login() {
@@ -18,9 +21,10 @@ function Login() {
   const [usernamePasswordError, setUsernamePasswordError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [componentMounted, setComponentMounted] = useState(false);
   const loginError = useSelector((state) => state.loginSuccess.error)
   const isloggedIn = useSelector((state) => state.loginSuccess.isloggedIn)
-
+  console.log(loginError, isloggedIn, "loginerror", "isloggedin");
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -40,39 +44,34 @@ function Login() {
     setUsernameError('');
     setPasswordError('');
 
-    if (formData.username === '') {
-      setUsernameError('Please enter a username');
+    if (formData.username === '' || formData.password === '') {
+      setUsernameError('Please enter username and password');
+      // setPasswordError('Please enter a password');
       return;
     }
 
     if (formData.password === '') {
-      setPasswordError('Please enter a password');
+      // setPasswordError('Please enter a password');
       return;
     }
-
-
-    // if (formData.password === '' || formData.username === '') {
-    //   setUsernamePasswordError('Please enter username and password');
-    //   return;
-    // }
-
-
+    setComponentMounted(!componentMounted);
     dispatch(loginSuccess(formData))
-    alert("login error", loginError)
   };
+  // useEffect(() => {
+  //   console.log("Testing")
+  //   setComponentMounted(!componentMounted);
+  // }, []);
   useEffect(() => {
-    if (loginError === null && isloggedIn === true) {
-      navigate(ROUTES.DASHBOARD)
+
+    if (loginError !== null && !isloggedIn && !componentMounted) {
+      toast.error("Incorrect username and password");
+    } else if (loginError === null && isloggedIn) {
+      navigate(ROUTES.DASHBOARD);
     }
-  }, [loginError, isloggedIn])
+  }, [loginError, isloggedIn, componentMounted, navigate]);
   return (
     <Container component="main" maxWidth="xs">
-      {/* <ReusableSnackbar
-        open={snackbarOpen}
-        message={snackbarMessage}
-        severity={addClientData == null && editClientData === null ? 'error' : 'success'}
-        handleClose={handleSnackbarClose}
-      /> */}
+
       <Box
         sx={{
           display: 'flex',
@@ -82,9 +81,14 @@ function Login() {
           height: '100vh',
         }}
       >
+        <img src={zohoImage} alt="Zoho Logo" style={{ width: '50%', marginTop: '-30%' }} />
         <Typography variant="h4" gutterBottom>
-          Sign in  to access Home
+          Sign in
         </Typography>
+        <Typography variant="h4" gutterBottom>
+          to access People
+        </Typography>
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -101,8 +105,8 @@ function Login() {
             fullWidth
             value={formData.username}
             onChange={handleChange}
-            error={!!usernameError}
-            helperText={usernameError}
+            error={!!usernameError || passwordError}
+            // helperText={usernameError || passwordError}
             margin="normal"
             variant="outlined"
           />
@@ -113,8 +117,8 @@ function Login() {
             fullWidth
             value={formData.password}
             onChange={handleChange}
-            error={!!passwordError}
-            helperText={passwordError}
+            error={!!passwordError || usernameError}
+            helperText={passwordError || usernameError}
             margin="normal"
             variant="outlined"
           />
@@ -129,6 +133,7 @@ function Login() {
           </Button>
         </Box>
       </Box>
+
     </Container>
   );
 }

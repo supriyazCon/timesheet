@@ -3,7 +3,6 @@ import axios from 'axios';
 
 export const getClient = createAsyncThunk('getClient', async () => {
   const response = await axios.get(`http://10.235.3.8:8021/api/client`);
-  console.log(`response->`, response.data);
   return response?.data;
 });
 
@@ -34,6 +33,72 @@ const getClientSlice = createSlice({
 
 export const { actions: getClientActions, reducer: getClientReducer, selectors: getClientSelectors } = getClientSlice;
 
+
+export const getBillingMethod = createAsyncThunk('getBillingMethod', async () => {
+  const response = await axios.get(`http://10.235.3.8:8021/api/billingmethod`);
+  return response?.data;
+});
+
+const getBillingMethodSlice = createSlice({
+  name: 'getBillingMethodSlice',
+  initialState: {
+    data: [],
+    loading: false,
+    error: null
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getBillingMethod.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBillingMethod.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getBillingMethod.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
+
+export const { actions: getBillingMethodActions, reducer: getBillingMethodReducer, selectors: getBillingMethodSelectors } = getBillingMethodSlice;
+
+
+export const getCurrency = createAsyncThunk('getCurrency', async () => {
+  const response = await axios.get(`http://10.235.3.8:8021/api/currency`);
+  return response?.data;
+});
+
+const getCurrencySlice = createSlice({
+  name: 'getCurrencySlice',
+  initialState: {
+    data: [],
+    loading: false,
+    error: null
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCurrency.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCurrency.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getCurrency.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
+
+export const { actions: getCurrencyActions, reducer: getCurrencyReducer, selectors: getCurrencySelectors } = getCurrencySlice;
+
 export const addClient = createAsyncThunk('addClient', async (data) => {
 
   const headers = {
@@ -48,7 +113,7 @@ export const addClient = createAsyncThunk('addClient', async (data) => {
     headers,
     body: JSON.stringify(data)
   });
-  // console.log(response)
+  console.log(response)
   const resData = response.ok ? await response.json() : null
   return resData
 });
@@ -120,9 +185,9 @@ export const {
   selectors: editClientSelectors
 } = editClientSlice;
 
-export const deleteClient = createAsyncThunk('deleteClient', async (id) => {
+export const deleteClient = createAsyncThunk('deleteClient', async (clientId) => {
   // console.log('post', id);
-  const response = await axios.delete(`http://10.235.3.8:8021/api/client/${id}`);
+  const response = await axios.delete(`http://10.235.3.8:8021/api/client/${clientId}`);
   // console.log('delete',response.data)
   return response.data;
 });

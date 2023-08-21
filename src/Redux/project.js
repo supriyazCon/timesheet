@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const getProject = createAsyncThunk('getProject', async () => {
   const response = await axios.get(`http://10.235.3.8:8021/api/project`);
@@ -37,6 +38,83 @@ export const {
   selectors: getProjectSelectors
 } = getProjectSlice;
 
+
+export const getProjectManager = createAsyncThunk('getProjectManager', async () => {
+  const response = await axios.get(`http://10.235.3.8:8021/api/projectmanager`);
+  return response?.data;
+});
+
+const getProjectManagerSlice = createSlice({
+  name: 'getProjectManagerSlice',
+  initialState: {
+    data: [],
+    loading: false,
+    error: null
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProjectManager.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProjectManager.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getProjectManager.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
+
+export const {
+  actions: getProjectManagerActions,
+  reducer: getProjectManagerReducer,
+  selectors: getProjectManagerSelectors
+} = getProjectManagerSlice;
+
+
+export const getDeliveryManager = createAsyncThunk('getDeliveryManager', async () => {
+  const response = await axios.get(`http://10.235.3.8:8021/api/deliverymanager`);
+  return response?.data;
+});
+
+const getDeliveryManagerSlice = createSlice({
+  name: 'getDeliveryManagerSlice',
+  initialState: {
+    data: [],
+    loading: false,
+    error: null
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getDeliveryManager.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDeliveryManager.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getDeliveryManager.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
+
+export const {
+  actions: getDeliveryManagerActions,
+  reducer: getDeliveryManagerReducer,
+  selectors: getDeliveryManagerSelectors
+} = getDeliveryManagerSlice;
+
+
+
+
 export const addProject = createAsyncThunk('addProject', async (data) => {
   console.log('post', data);
 
@@ -51,10 +129,10 @@ export const addProject = createAsyncThunk('addProject', async (data) => {
     method: 'POST',
     headers,
     body: JSON.stringify(data)
-  }).then(res => res.json())
-    .then(res => console.log(res));
-
+  });
+  // toast.success("Project Added successfully!!")
   const resData = response.ok ? await response.json() : null
+
   return resData
 });
 
@@ -92,7 +170,8 @@ export const {
 export const editProject = createAsyncThunk('editProject', async (data) => {
   const { projectId, ...rest } = data;
   const response = await axios.put(`http://10.235.3.8:8021/api/project/${projectId}`, rest);
-  // console.log('edit',response)
+  console.log('edit', response)
+  // toast.success("Project Updated successfully!!")
   return response.data;
 });
 

@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.6a44cb89.css",
-    "main.js": "/static/js/main.d4cb067c.js",
+    "main.css": "/static/css/main.f6894810.css",
+    "main.js": "/static/js/main.4ed84e78.js",
     "static/js/787.2da55f20.chunk.js": "/static/js/787.2da55f20.chunk.js",
     "static/media/dashboard.jpg": "/static/media/dashboard.fc46ed10f3ad40f81578.jpg",
     "static/media/zoho.png": "/static/media/zoho.eeb2c40e66f382d25161.png",
+    "static/media/zoho-logo.png": "/static/media/zoho-logo.08736bb985ea98d00af3.png",
     "static/media/noRecordsFound.png": "/static/media/noRecordsFound.f0ccb189b59b661f6eb4.png",
     "index.html": "/index.html",
-    "main.6a44cb89.css.map": "/static/css/main.6a44cb89.css.map",
-    "main.d4cb067c.js.map": "/static/js/main.d4cb067c.js.map",
+    "main.f6894810.css.map": "/static/css/main.f6894810.css.map",
+    "main.4ed84e78.js.map": "/static/js/main.4ed84e78.js.map",
     "787.2da55f20.chunk.js.map": "/static/js/787.2da55f20.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6a44cb89.css",
-    "static/js/main.d4cb067c.js"
+    "static/css/main.f6894810.css",
+    "static/js/main.4ed84e78.js"
   ]
 }

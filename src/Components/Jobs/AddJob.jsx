@@ -40,8 +40,7 @@ function AddJob() {
   const projectData = useSelector(state => state.getProject.data)
   const addJobData = useSelector(state => state.addJob.data)
   const editJobData = useSelector(state => state.editJob?.data)
-  const projects = projectData.map((el, ind) => ({ 'projectId': ind + 1, 'name': el.projectName }));
-  // const projects = projectData.map((el,ind) => ({ value: el.projectId, label: el.projectName }));
+  const projects = projectData.map((el, ind) => ({ 'id': el.projectId, 'name': el.projectName }));
   console.log(projectData, "project data")
 
 
@@ -93,7 +92,6 @@ function AddJob() {
       options: projects,
       isSelecteAllAllow: false,
       columnWidth: 6,
-      onchange: (event) => setPayload({ ...payload, projectId: event.target.value })
     },
 
   ];

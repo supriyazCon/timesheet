@@ -10,26 +10,23 @@ import { CLIENTS_DATA, PROJECT_HEAD_DATA, PROJECT_MANAGER_DATA, USERS_DATA } fro
 import { COMPONENTS } from '../../Utils/Constants';
 import { ROUTES } from '../../Routes/Paths';
 import { addProjectData, updateProjectData } from '../../Services/projectServices';
-import { addProject, editProject, getDeliveryManager, getProjectManager } from '../../Redux/project';
+import { addProject, editProject, getDeliveryManager, getProject, getProjectManager } from '../../Redux/project';
 import ReusableSnackbar from '../../common/ReusableSnackbar';
 import { getClient } from '../../Redux/clients';
+import { getJob } from '../../Redux/jobs';
 
-function AddProject() {
+function AddTimeLog() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { TEXT_FIELD, SELECT_BOX, BUTTON, TYPOGRAPHY, ICON } = COMPONENTS;
-  const { PROJECTS } = ROUTES;
+  const { TIMELOGS } = ROUTES;
   const [isUpdate, setIsUpdate] = useState(false);
   const [emptyPayload, setEmptyPayload] = useState({
     projectName: '',
-    clientId: '',
-    projectCost: '',
-    deliveryManagerId: '',
-    projectManagerId: '',
-    rate: '',
-    // projectUsers: '',
+    taskName: '',
     description: '',
+    totalHours: '',
     isActive: false,
     isDeleted: false,
     createdDate: new Date(),
@@ -44,11 +41,11 @@ function AddProject() {
   const updatePayload = (pairs) => setPayload((prevPayload) => ({ ...prevPayload, ...pairs }));
   const addProjectData = useSelector((state) => state.addProject.data);
   const editProjectData = useSelector((state) => state.editProject.data);
-  const clienttData = useSelector(state => state.getClient.data);
-  const projectManagerData = useSelector(state => state.getProjectManager.data);
+  const projectData = useSelector(state => state.getProject.data);
+  const jobData = useSelector(state => state.getJob.data);
   const deliveryManagerData = useSelector(state => state.getDeliveryManager.data);
-  const clients = clienttData.map((el, ind) => ({ 'id': el.clientId, 'name': el.clientName }));
-  const projectManagers = projectManagerData.map((el, ind) => ({ 'id': el.projectManagerId, 'name': el.name }));
+  const projects = projectData.map((el, ind) => ({ 'id': el.projectName, 'name': el.projectName }));
+  const jobs = jobData.map((el, ind) => ({ 'id': el.taskName, 'name': el.taskName }));
   const deliveryManagers = deliveryManagerData.map((el, ind) => ({ 'id': el.deliveryManagerId, 'name': el.name }));
 
   // console.log(projectManagerData, 'projectManagerdata')
@@ -61,7 +58,7 @@ function AddProject() {
 
   const validationSchema = yup.object().shape({
     projectName: yup.string().required("Project Name is required"),
-    clientId: yup.string().required("clientId is required"),
+    taskName: yup.string().required("clientId is required"),
     projectManagerId: yup.string().required("project manager is required"),
     deliveryManagerId: yup.string().required("delivery manager is required"),
     projectCost: yup.number().typeError("Project Cost must be a number").nullable(),
@@ -88,7 +85,7 @@ function AddProject() {
       control: ICON,
       iconName: <ArrowBackIosIcon />,
       color: 'primary',
-      handleClickIcon: () => navigate(PROJECTS),
+      handleClickIcon: () => navigate(TIMELOGS),
       columnWidth: 0.5
     },
     {
@@ -98,8 +95,8 @@ function AddProject() {
         display: 'flex',
         justifyContent: 'flex-start'
       },
-      key: 'addClientLabel',
-      label: 'Add Project',
+      key: 'addTimeLogLabel',
+      label: 'Add TimeLog',
       columnWidth: 1
     },
     {
@@ -107,7 +104,7 @@ function AddProject() {
       iconName: <CloseIcon />,
       groupStyle: { position: 'absolute', right: '1rem' },
       color: 'error',
-      handleClickIcon: () => navigate(PROJECTS),
+      handleClickIcon: () => navigate(TIMELOGS),
       columnWidth: 0.5
     }
   ];
@@ -133,36 +130,10 @@ function AddProject() {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'end',
-        marginTop: '0.5rem'
-      },
-      key: 'clientNameLabel',
-      label: 'Client Name',
-      columnWidth: 3
-    },
-    {
-      control: TYPOGRAPHY,
-      groupStyle: {
-        height: '3rem',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'end',
-        marginTop: '0.8rem'
-      },
-      key: 'projectCost',
-      label: 'Project Cost',
-      columnWidth: 3.5
-    },
-    {
-      control: TYPOGRAPHY,
-      groupStyle: {
-        height: '3rem',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'end',
         marginTop: '1rem'
       },
-      key: 'deliveryManagerLabel',
-      label: 'Delivery Manager',
+      key: 'TaskNameLabel',
+      label: 'Task Name',
       columnWidth: 3.5
     },
     {
@@ -174,36 +145,10 @@ function AddProject() {
         alignItems: 'end',
         marginTop: '0.8rem'
       },
-      key: 'rate',
-      label: 'Rate',
-      columnWidth: 5
+      key: 'totalHours',
+      label: 'Total Hours',
+      columnWidth: 3.5
     },
-    {
-      control: TYPOGRAPHY,
-      groupStyle: {
-        height: '3rem',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'end',
-        marginTop: '0.8rem'
-      },
-      key: 'projectManagerId',
-      label: 'Project Manager',
-      columnWidth: 5
-    },
-    // {
-    //   control: TYPOGRAPHY,
-    //   groupStyle: {
-    //     height: '3rem',
-    //     display: 'flex',
-    //     justifyContent: 'flex-start',
-    //     alignItems: 'end',
-    //     marginTop: '0.8rem'
-    //   },
-    //   key: 'projectUsers',
-    //   label: 'Project Users',
-    //   columnWidth: 3.5
-    // },
     {
       control: TYPOGRAPHY,
       groupStyle: {
@@ -221,10 +166,14 @@ function AddProject() {
 
   const projectInputs = [
     {
-      control: TEXT_FIELD,
+      control: SELECT_BOX,
+      select: true,
+      variant: 'standard',
+      groupStyle: { marginTop: '1rem' },
       key: 'projectName',
-      variant: 'standard',
-      label: 'Project Name',
+      label: 'Select Project',
+      options: projects,
+      isSelecteAllAllow: false,
       columnWidth: 6
     },
     {
@@ -232,61 +181,20 @@ function AddProject() {
       select: true,
       variant: 'standard',
       groupStyle: { marginTop: '1rem' },
-      key: 'clientId',
-      label: 'Select Client',
-      options: clients,
+      key: 'taskName',
+      label: 'Select Job',
+      options: jobs,
       isSelecteAllAllow: false,
       columnWidth: 6
     },
     {
       control: TEXT_FIELD,
       groupStyle: { marginTop: '1rem' },
-      key: 'projectCost',
+      key: 'totalHours',
       variant: 'standard',
-      label: 'Project Cost',
+      label: 'Total Hours',
       columnWidth: 6
     },
-    {
-      control: SELECT_BOX,
-      select: true,
-      variant: 'standard',
-      groupStyle: { marginTop: '1rem' },
-      key: 'deliveryManagerId',
-      label: 'Select Delivery Manager',
-      options: deliveryManagers,
-      isSelecteAllAllow: false,
-      columnWidth: 6
-    },
-    {
-      control: TEXT_FIELD,
-      groupStyle: { marginTop: '1rem' },
-      key: 'rate',
-      variant: 'standard',
-      label: 'Rate',
-      columnWidth: 6
-    },
-    {
-      control: SELECT_BOX,
-      select: true,
-      variant: 'standard',
-      groupStyle: { marginTop: '1rem' },
-      key: 'projectManagerId',
-      label: ' Select Project Manager',
-      options: projectManagers,
-      isSelecteAllAllow: false,
-      columnWidth: 6
-    },
-    // {
-    //   control: SELECT_BOX,
-    //   select: true,
-    //   variant: 'standard',
-    //   groupStyle: { marginTop: '1rem' },
-    //   key: 'projectUsers',
-    //   label: 'Project Users',
-    //   options: USERS_DATA,
-    //   isSelecteAllAllow: false,
-    //   columnWidth: 6
-    // },
     {
       control: TEXT_FIELD,
       groupStyle: { marginTop: '1rem' },
@@ -311,7 +219,7 @@ function AddProject() {
       control: BUTTON,
       // groupStyle: { marginRight: '1rem' },
       btnTitle: 'Cancel',
-      handleClickButton: () => navigate(PROJECTS),
+      handleClickButton: () => navigate(TIMELOGS),
       columnWidth: 0.8
     }
   ];
@@ -342,7 +250,7 @@ function AddProject() {
       setSnackbarOpen(true);
       updatePayload(emptyPayload);
       setTimeout(() => {
-        navigate(PROJECTS);
+        navigate(TIMELOGS);
       }, 2000);
     } catch (error) {
       // Handle the validation error here
@@ -358,8 +266,8 @@ function AddProject() {
   };
 
   useEffect(() => {
-    dispatch(getClient())
-    dispatch(getProjectManager())
+    dispatch(getProject())
+    dispatch(getJob())
     dispatch(getDeliveryManager())
     if (location?.state) {
       updatePayload(location?.state);
@@ -417,7 +325,7 @@ function AddProject() {
               <RenderComponents
                 metaData={{
                   control: TYPOGRAPHY,
-                  label: 'Project Configuration Details',
+                  label: 'TimeLog Configuration Details',
                   labelStyle: { fontWeight: 'bold' },
                   columnWidth: 6
                 }}
@@ -473,4 +381,4 @@ function AddProject() {
   );
 }
 
-export default AddProject;
+export default AddTimeLog;

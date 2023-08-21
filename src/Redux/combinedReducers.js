@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { addClientReducer, getClientReducer, editClientReducer, deleteClientReducer } from './clients';
-import { getProjectReducer, deleteProjectReducer, editProjectReducer, addProjectReducer } from './project';
+import { addClientReducer, getClientReducer, editClientReducer, deleteClientReducer, getBillingMethodReducer, getCurrencyReducer } from './clients';
+import { getProjectReducer, deleteProjectReducer, editProjectReducer, addProjectReducer, getProjectManagerReducer, getDeliveryManagerReducer } from './project';
 import { getJobReducer, addJobReducer, editJobReducer, deleteJobReducer } from './jobs';
 import { loginSuccessReducer } from './login';
+import { getTimeLogReducer } from './timeLogs';
+
 
 const rootReducer = combineReducers({
   getClient: getClientReducer,
@@ -18,6 +20,11 @@ const rootReducer = combineReducers({
   editJob: editJobReducer,
   deleteJob: deleteJobReducer,
   loginSuccess: loginSuccessReducer,
+  getProjectManager: getProjectManagerReducer,
+  getDeliveryManager: getDeliveryManagerReducer,
+  getBillingMethod: getBillingMethodReducer,
+  getCurrency: getCurrencyReducer,
+  getTimeLog: getTimeLogReducer
 });
 
 export default rootReducer;

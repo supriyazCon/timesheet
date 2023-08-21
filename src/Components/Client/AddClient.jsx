@@ -1,7 +1,6 @@
 // import { v4 as uuidv4 } from 'uuid';
 import React, { useState, useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Grid } from '@mui/material';
@@ -14,7 +13,7 @@ import { addClientData, updateClientData } from '../../Services/clientServices';
 import { ROUTES } from '../../Routes/Paths';
 import { BILLING_METHOD, CURRENCIES } from '../../Utils/DataConstants';
 import './AddClient.scss';
-import { addClient, editClient } from '../../Redux/clients';
+import { addClient, editClient, getBillingMethod, getCurrency } from '../../Redux/clients';
 import ReusableSnackbar from '../../common/ReusableSnackbar';
 
 function AddClient() {
@@ -22,6 +21,7 @@ function AddClient() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [formErrors, setFormErrors] = useState({});
   const { TEXT_FIELD, SELECT_BOX, BUTTON, TYPOGRAPHY, ICON } = COMPONENTS;
   const { CLIENTS } = ROUTES;
   const [isUpdate, setIsUpdate] = useState(false);
@@ -51,6 +51,38 @@ function AddClient() {
   const addClientError = useSelector(state => state.addClient.error)
   const addClientData = useSelector(state => state.addClient.data)
   const editClientData = useSelector(state => state.editClient?.data)
+  const billingMethodData = useSelector(state => state.getBillingMethod.data);
+  const billingMethods = billingMethodData.map((el, ind) => ({ 'id': el.billingMethodId, 'name': el.name }));
+  const currencyData = useSelector(state => state.getCurrency.data);
+  const currencies = currencyData.map((el, ind) => ({ 'id': el.currencyId, 'name': el.currencyCode }));
+
+  // console.log(billingMethodData, "billingMethodData")
+  // console.log(currencyData, "currencyData")
+
+  const validationSchema = yup.object().shape({
+    clientName: yup.string().required("Client Name is required"),
+    currencyId: yup.string().required("Currency is required"),
+    billingMethodId: yup.string().nullable(),
+    emailId: yup
+      .string()
+      .email("Invalid email format")
+      .test(
+        "email-domain",
+        "Invalid email domain",
+        (value) => value == null || value.endsWith(".com") || value.endsWith(".co")
+      ),
+    firstName: yup.string().required("First Name is required"),
+    lastName: yup.string().required("Last Name is required"),
+    phone: yup
+      .string()
+      .matches(/^\d{0,10}$/, "Phone must be a maximum of 10 digits")
+      .nullable(),
+    mobile: yup
+      .string()
+      .matches(/^\d{0,10}$/, "Mobile must be a maximum of 10 digits")
+      .nullable(),
+    fax: yup.number().typeError("Fax must be a number").nullable(),
+  });
 
 
 
@@ -64,6 +96,20 @@ function AddClient() {
   };
 
   // const handleActionDispatch = (type, data = []) => dispatch({ type, data });
+
+  const contactSectionStyle = {
+    // height: '25rem',
+    overflowY: 'scroll',
+    whiteSpace: 'nowrap'
+  };
+
+
+  const contactInputsStyle = {
+    height: 'auto',
+    overflowY: 'scroll',
+    whiteSpace: 'nowrap'
+  };
+
 
   const clientLabels = [
     {
@@ -116,7 +162,8 @@ function AddClient() {
         height: '3rem',
         display: 'flex',
         justifyContent: 'flex-start',
-        alignItems: 'end'
+        alignItems: 'end',
+        marginBottom: '0.8rem'
       },
       key: 'emailIdLabel',
       label: 'Email Id',
@@ -204,7 +251,7 @@ function AddClient() {
       groupStyle: { marginTop: '1rem' },
       key: 'currencyId',
       label: 'currency',
-      options: CURRENCIES.sort((a, b) => a.name.localeCompare(b.name)),
+      options: currencies,
       isSelecteAllAllow: false,
       columnWidth: 6
     },
@@ -215,7 +262,7 @@ function AddClient() {
       groupStyle: { marginTop: '1rem' },
       key: 'billingMethodId',
       label: 'Billing Method',
-      options: BILLING_METHOD,
+      options: billingMethods,
       isSelecteAllAllow: false,
       columnWidth: 6
     }
@@ -252,7 +299,8 @@ function AddClient() {
       key: 'phone',
       variant: 'standard',
       label: 'Phone',
-      columnWidth: 6
+      columnWidth: 6,
+      type: 'number'
     },
     {
       control: TEXT_FIELD,
@@ -260,7 +308,8 @@ function AddClient() {
       key: 'mobile',
       variant: 'standard',
       label: 'Mobile',
-      columnWidth: 6
+      columnWidth: 6,
+      type: 'number'
     },
     {
       control: TEXT_FIELD,
@@ -268,7 +317,8 @@ function AddClient() {
       key: 'fax',
       variant: 'standard',
       label: 'Fax',
-      columnWidth: 6
+      columnWidth: 6,
+      type: 'number'
     }
   ];
 
@@ -285,7 +335,7 @@ function AddClient() {
       control: BUTTON,
       // groupStyle: { marginRight: '1rem' },
       btnTitle: 'Cancel',
-      handleClickButton: () => null,
+      handleClickButton: () => navigate(CLIENTS),
       columnWidth: 0.8
     }
   ];
@@ -322,23 +372,35 @@ function AddClient() {
   const handleAddClient = async () => {
     const data = payload;
 
-    if (!data.clientName || !data.currencyId) {
-      return; // Exit early and do not proceed with the submission
-    }
-    // console.log(data)
-    if (isUpdate) {
-      dispatch(editClient(data));
-      // setSnackbarSeverity('success');
-    } else {
-      dispatch(addClient(data));
-    }
-    setSnackbarOpen(true);
-    updatePayload(emptyPayload)
-    setTimeout(() => {
-      navigate(CLIENTS);
-    }, 2000);
+    try {
+      await validationSchema.validate(data, { abortEarly: false });
 
+      if (isUpdate) {
+        dispatch(editClient(data));
+      } else {
+        dispatch(addClient(data));
+      }
+
+      setSnackbarOpen(true);
+      updatePayload(emptyPayload);
+      setFormErrors({}); // Clear form errors on successful submission
+
+      setTimeout(() => {
+        navigate(CLIENTS);
+      }, 2000);
+    } catch (error) {
+      // Handle the validation error here
+      if (error.inner) {
+        const errors = {};
+        error.inner.forEach((err) => {
+          errors[err.path] = err.message;
+        });
+        setFormErrors(errors);
+      }
+    }
   };
+
+  // console.log("Form Errors:", formErrors); // Log the formErrors to the console
 
   const isSubmitDisabled = !payload.clientName || !payload.currencyId;
 
@@ -366,6 +428,8 @@ function AddClient() {
 
   useEffect(() => {
     // console.log('locationState', location?.state);
+    dispatch(getCurrency())
+    dispatch(getBillingMethod())
     if (location?.state) {
       updatePayload(location?.state);
       setIsUpdate(true);
@@ -381,15 +445,16 @@ function AddClient() {
   } else if (!isUpdate && addClientData !== null) {
     snackbarMessage = 'Client added successfully.';
   } else {
-    snackbarMessage = 'Something went wrong. Please try again.';
+    snackbarMessage = 'Client added successfully...';
   }
+
 
   return (
     <Grid container spacing={2}>
       <ReusableSnackbar
         open={snackbarOpen}
         message={snackbarMessage}
-        severity={addClientData == null && editClientData === null ? 'error' : 'success'}
+        severity={addClientData === null && editClientData === null ? 'error' : 'success'}
         handleClose={handleSnackbarClose}
       />
       <Grid
@@ -408,9 +473,9 @@ function AddClient() {
         ))}
       </Grid>
       <Grid item xs={12} style={{ height: '32rem', overflowY: 'scroll', whiteSpace: 'nowrap' }}>
-        <Box style={{ padding: '1.5rem', backgroundColor: 'white' }}>
+        <Box style={{ padding: '1.5rem', backgroundColor: 'white', ...contactInputsStyle }}>
           <Grid container spacing={1}>
-            <Grid item xs={12} style={{ paddingLeft: '0.8rem' }}>
+            <Grid item xs={12} style={{ paddingLeft: '0.8rem', ...contactSectionStyle }}>
               <RenderComponents
                 metaData={{
                   control: TYPOGRAPHY,
@@ -458,10 +523,11 @@ function AddClient() {
                 {contactsInputs?.map((comp, ind) => (
                   <RenderComponents
                     key={ind}
-                    metaData={comp}
+                    metaData={{ ...comp }}
                     ind={ind}
                     payload={payload}
                     handleChange={handleChangeData}
+                    error={formErrors[comp.key]}
                   />
                 ))}
               </Grid>

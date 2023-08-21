@@ -12,7 +12,8 @@ import {
 import { COMPONENTS } from '../../Utils/Constants';
 import { isArray } from '../../Utils/Utils';
 
-const RenderComponents = ({ payload, metaData, ind, handleChange }) => {
+const RenderComponents = ({ payload, metaData, ind, handleChange, error }) => {
+  // console.log('render', error)
   const {
     TEXT_FIELD,
     SELECT_BOX,
@@ -56,8 +57,8 @@ const RenderComponents = ({ payload, metaData, ind, handleChange }) => {
       handleClickButton,
       iconSize,
       isDisabled = metaData.disabled || false,
-      isError = metaData.error || false,
-      helperText = metaData.helperText || false,
+      isError = false,
+      helperText = '',
       isRequired = false,
       handleBlur,
       endAdornmentData,
@@ -119,8 +120,8 @@ const RenderComponents = ({ payload, metaData, ind, handleChange }) => {
                 value={(payload && payload[key]) || ''}
                 style={{ ...controlStyle }}
                 disabled={isDisabled}
-                error={isError}
-                helperText={isError && helperText}
+                error={isError || Boolean(error)}
+                helperText={isError ? helperText : error || ''}
                 required={isRequired}
                 autoComplete="off"
                 // onInput={(e) => {

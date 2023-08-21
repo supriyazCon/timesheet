@@ -51,3 +51,10 @@ export const JOBS_DATA = [
   { id: 4, name: 'Job-4' },
   { id: 5, name: 'Job-5' }
 ];
+export const TIMELOGS_DATA = [
+  { id: 1, name: 'timelog-1' },
+  { id: 2, name: 'timelog-2' },
+  { id: 3, name: 'timelog-3' },
+  { id: 4, name: 'timelog-4' },
+  { id: 5, name: 'timelog-5' }
+];

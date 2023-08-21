@@ -1,7 +1,7 @@
 import React from 'react';
 
-function TimeSheets() {
+function AddTimesheet() {
   return <h1>TimeSheets</h1>;
 }
 
-export default TimeSheets;
+export default AddTimesheet;

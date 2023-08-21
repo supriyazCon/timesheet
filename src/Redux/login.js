@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../Routes/Paths';
 
@@ -20,7 +22,7 @@ export const loginSuccess = createAsyncThunk('loginSuccess', async (data) => {
   const resData = await response.json();
   console.log(resData, "resData")
   if (response.status === 200) {
-    alert("Logged in Successfully!!")
+    toast.success("Logged in Successfully!!")
   } else {
 
     console.log("error")

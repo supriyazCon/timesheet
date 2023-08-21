@@ -28,7 +28,7 @@ function ClientGrid() {
   const deleteCLientError = useSelector(state => state.deleteClient.error)
   const [deleteId, setDeleteId] = useState(null)
 
-  console.log('client', clientData)
+  // console.log('client',clientData)
   // Function to handle Snackbar close event
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -40,20 +40,20 @@ function ClientGrid() {
 
   // console.log('error', addCLientError)
   const topComponents = [
-    {
-      control: SELECT_BOX,
-      select: true,
-      variant: 'standard',
-      groupStyle: { paddingBottom: '0.5rem', marginBottom: '1rem' },
-      key: 'clients',
-      label: 'Clients',
-      options: CLIENTS_DATA,
-      isSelecteAllAllow: false,
-      columnWidth: 2
-    },
+    // {
+    //   control: SELECT_BOX,
+    //   select: true,
+    //   variant: 'standard',
+    //   groupStyle: { paddingBottom: '0.5rem', marginBottom: '1rem' },
+    //   key: 'clients',
+    //   label: 'Clients',
+    //   options: CLIENTS_DATA,
+    //   isSelecteAllAllow: false,
+    //   columnWidth: 2
+    // },
     {
       control: BUTTON,
-      groupStyle: { position: 'absolute', right: '6rem', marginBottom: '1rem' },
+      groupStyle: { position: 'absolute', right: '6.5rem', marginBottom: '1rem' },
       btnTitle: 'Add Client',
       handleClickButton: () => navigate(ADD_CLIENT),
       startIcon: <AddIcon />,
@@ -67,7 +67,7 @@ function ClientGrid() {
     { field: 'firstName', headerName: 'First Name', width: 130 },
     { field: 'lastName', headerName: 'Last name', width: 130 },
     // { field: 'currency', headerName: 'Currency', width: 100 },
-    // { field: 'billingMethod', headerName: 'Billing Method', width: 130 },
+    // { field: 'billingMethodId', headerName: 'Billing Method', width: 130 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'phone', headerName: 'Phone', width: 150 },
     { field: 'fax', headerName: 'Fax', width: 150 },
@@ -123,9 +123,11 @@ function ClientGrid() {
   };
 
   const handleConfirm = () => {
+
     dispatch(deleteClient(deleteId));
+    console.log('deleteId after dispatch:', deleteId);
     setSnackbarOpen(true)
-    dispatch(getClient());
+    // dispatch(getClient());
     setDialogOpen(false); // Close the dialog after confirming delete
     setDeleteId(null)
   };

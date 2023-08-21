@@ -18,7 +18,7 @@ import RenderComponents from '../RenderComponents/RenderComponents';
 import ReusableSnackbar from '../../common/ReusableSnackbar';
 import ReusableDialog from '../../common/ReusableDialog';
 
-function JobGrid() {
+function TimesheetGrid() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const jobData = useSelector((state) => state.getJob.data);
@@ -37,7 +37,7 @@ function JobGrid() {
     setSnackbarOpen(false);
   };
 
-  console.log(jobData, "jobData")
+
   const topComponents = [
     {
       control: SELECT_BOX,
@@ -63,12 +63,6 @@ function JobGrid() {
   const columnData = [
     // { field: 'jobId', headerName: 'Id', width: 70 },
     { field: 'taskName', headerName: 'Job name', width: 200 },
-    {
-      field: 'projectName',
-      headerName: 'Project name',
-      width: 200,
-      valueGetter: (params) => params.row.project?.projectName || 'N/A'
-    },
     {
       field: 'edit',
       headerName: 'Edit',
@@ -187,4 +181,4 @@ function JobGrid() {
   );
 }
 
-export default JobGrid;
+export default TimesheetGrid;

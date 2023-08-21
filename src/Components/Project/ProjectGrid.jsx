@@ -26,7 +26,7 @@ function ProjectGrid() {
   const { SELECT_BOX, BUTTON, ICON } = COMPONENTS;
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const deleteProjectError = useSelector((state) => state?.deleteProject?.error);
+  const deleteProjectError = useSelector((state) => state.deleteProject.error);
   const [deleteId, setDeleteId] = useState(null);
 
   const handleSnackbarClose = (event, reason) => {
@@ -53,6 +53,7 @@ function ProjectGrid() {
     setDialogOpen(false);
   };
 
+  const getRowId = (data) => data?.projectId;
   const topComponents = [
     {
       control: SELECT_BOX,
@@ -76,12 +77,12 @@ function ProjectGrid() {
       control: ICON,
       key: 'department',
       iconTitle: 'Department',
-      groupStyle: { position: 'absolute', right: '15rem', marginBottom: '1rem' },
+      groupStyle: { position: 'absolute', right: '15.5rem', marginBottom: '1rem' },
       columnWidth: 1
     },
     {
       control: BUTTON,
-      groupStyle: { position: 'absolute', right: '6rem', marginBottom: '1rem' },
+      groupStyle: { position: 'absolute', right: '6.5rem', marginBottom: '1rem' },
       btnTitle: 'Add Project',
       handleClickButton: () => navigate(ADD_PROJECT),
       startIcon: <AddIcon />,
@@ -92,8 +93,10 @@ function ProjectGrid() {
   const columnData = [
     // { field: 'id', headerName: 'Id', width: 70 },
     { field: 'projectName', headerName: 'Project Name', width: 300 },
-    { field: 'estimatedHours', headerName: 'Estimated Hours', width: 180 },
-    { field: 'loggedHours', headerName: 'Logged Hours', width: 180 },
+    { field: 'description', headerName: 'Description', width: 300 },
+    { field: 'rate', headerName: 'Rate', width: 300 },
+    // { field: 'estimatedHours', headerName: 'Estimated Hours', width: 180 },
+    // { field: 'loggedHours', headerName: 'Logged Hours', width: 180 },
     {
       field: 'status',
       headerName: 'Status',
@@ -156,10 +159,10 @@ function ProjectGrid() {
     navigate(ADD_PROJECT, { state: tableData });
   };
 
-  const getRowId = (data) => data?.projectId;
 
   useEffect(() => {
     dispatch(getProject());
+    // console.log('delete', deleteId)
   }, [deleteId]);
 
   let snackbarMessage;

@@ -5,9 +5,8 @@ import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import { COMPONENTS } from '../../Utils/Constants';
-import { JOBS_DATA } from '../../Utils/DataConstants';
+import { JOBS_DATA, TIMELOGS_DATA } from '../../Utils/DataConstants';
 import { ROUTES } from '../../Routes/Paths';
 import { getApiData } from '../../Services/TestService';
 // import { getJobData, deleteJobData } from '../../Services/jobServices';
@@ -17,14 +16,15 @@ import { deleteJob, getJob } from '../../Redux/jobs';
 import RenderComponents from '../RenderComponents/RenderComponents';
 import ReusableSnackbar from '../../common/ReusableSnackbar';
 import ReusableDialog from '../../common/ReusableDialog';
+import { getTimeLog } from '../../Redux/timeLogs';
 
-function JobGrid() {
+function TimeLogGrid() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const jobData = useSelector((state) => state.getJob.data);
+  const timeLogData = useSelector((state) => state.getTimeLog.data);
   const dispatch = useDispatch();
   const { SELECT_BOX, BUTTON, ICON } = COMPONENTS;
-  const { ADD_JOB } = ROUTES;
+  const { ADD_TIMELOG } = ROUTES;
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const deleteJobError = useSelector(state => state.deleteJob.error);
   const [deleteId, setDeleteId] = useState(null);
@@ -37,24 +37,24 @@ function JobGrid() {
     setSnackbarOpen(false);
   };
 
-  console.log(jobData, "jobData")
+
   const topComponents = [
     {
       control: SELECT_BOX,
       select: true,
       variant: 'standard',
       groupStyle: { paddingBottom: '0.5rem', marginBottom: '1rem' },
-      key: 'jobs',
-      label: 'Jobs',
-      options: JOBS_DATA,
+      key: 'timelogs',
+      label: 'TimeLogs',
+      options: TIMELOGS_DATA,
       isSelecteAllAllow: false,
       columnWidth: 2
     },
     {
       control: BUTTON,
       groupStyle: { position: 'absolute', right: '6.5rem', marginBottom: '1rem' },
-      btnTitle: 'Add Job',
-      handleClickButton: () => navigate(ADD_JOB),
+      btnTitle: 'Add Log Time',
+      handleClickButton: () => navigate(ADD_TIMELOG),
       startIcon: <AddIcon />,
       columnWidth: 1.5
     }
@@ -62,13 +62,11 @@ function JobGrid() {
 
   const columnData = [
     // { field: 'jobId', headerName: 'Id', width: 70 },
-    { field: 'taskName', headerName: 'Job name', width: 200 },
-    {
-      field: 'projectName',
-      headerName: 'Project name',
-      width: 200,
-      valueGetter: (params) => params.row.project?.projectName || 'N/A'
-    },
+    { field: 'projectName', headerName: 'Project name', width: 200 },
+    { field: 'taskName', headerName: 'Task name', width: 200 },
+    { field: 'description', headerName: 'Description', width: 200 },
+    { field: 'totalHours', headerName: 'Total Hours', width: 200 },
+    { field: 'createdDate', headerName: 'Date', width: 200 },
     {
       field: 'edit',
       headerName: 'Edit',
@@ -80,7 +78,7 @@ function JobGrid() {
               control: ICON,
               iconName: <EditIcon />,
               tooltipTitle: 'Update',
-              handleClickIcon: () => handleEdit(params.row.taskId)
+              handleClickIcon: () => handleEdit(params.row.id)
             }}
           />
         </div>
@@ -97,7 +95,7 @@ function JobGrid() {
               control: ICON,
               iconName: <DeleteIcon />,
               tooltipTitle: 'Delete',
-              handleClickIcon: () => handleDeleteClick(params.row.taskId)
+              handleClickIcon: () => handleDeleteClick(params.row.id)
             }}
           />
         </div>
@@ -107,9 +105,9 @@ function JobGrid() {
 
   const handleEdit = (id) => {
     console.log(id, "idJOb")
-    const tableData = jobData.find((item) => item.taskId === id);
+    const tableData = timeLogData.find((item) => item.id === id);
     console.log('tableData', tableData);
-    navigate(ADD_JOB, { state: tableData });
+    navigate(ADD_TIMELOG, { state: tableData });
   };
 
   const handleDeleteClick = (id) => {
@@ -129,10 +127,10 @@ function JobGrid() {
     setDialogOpen(false);
   };
 
-  const getRowId = (data) => data?.taskId;
+  const getRowId = (data) => data?.id;
 
   useEffect(() => {
-    dispatch(getJob());
+    dispatch(getTimeLog());
   }, [deleteId]);
 
   let snackbarMessage;
@@ -177,14 +175,14 @@ function JobGrid() {
         ))}
       </Grid>
       <Grid item xs={12} style={{ height: '100vh', marginTop: '5rem', backgroundColor: '#ffffff' }}>
-        {jobData?.length > 0 ? (
-          <MuiTable columnsData={columnData} rowsData={jobData} getRowId={getRowId} />
+        {timeLogData?.length > 0 ? (
+          <MuiTable columnsData={columnData} rowsData={timeLogData} getRowId={getRowId} />
         ) : (
-          <NoDataFound message='No Jobs found' />
+          <NoDataFound message='No Time Log(s) found' />
         )}
       </Grid>
     </Grid>
   );
 }
 
-export default JobGrid;
+export default TimeLogGrid;

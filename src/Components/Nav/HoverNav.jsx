@@ -8,10 +8,16 @@ function HoverNav({ hover, setHover }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [timeSheets, setTimeSheets] = useState(false);
+  const [timeLogs, setTimeLogs] = useState(false);
   const [Jobs, setJobs] = useState(false);
   const handleClickOpen = () => {
     setOpen(!open);
   };
+  const handleClickTimeLogs = () => {
+    setHover(!hover);
+    setTimeLogs(!timeLogs);
+    navigate(ROUTES.TIMELOGS)
+  }
   const handleClickTimeSheets = () => {
     setHover(!hover);
     setTimeSheets(!timeSheets);
@@ -40,7 +46,7 @@ function HoverNav({ hover, setHover }) {
         </ListItemButton>
         <Collapse in={open}>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }}>
+            <ListItemButton sx={{ pl: 4 }} onClick={handleClickTimeLogs}>
               <ListItemText primary="List View" />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }}>
