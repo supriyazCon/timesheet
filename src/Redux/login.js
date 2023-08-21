@@ -2,15 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../Routes/Paths';
-
 
 export const loginSuccess = createAsyncThunk('loginSuccess', async (data) => {
-  console.log(data, "data")
-
-
-  console.log("tast")
   const response = await fetch('http://10.235.3.8:8021/api/auth/api/login', {
     method: 'POST',
     headers: {
@@ -18,9 +11,7 @@ export const loginSuccess = createAsyncThunk('loginSuccess', async (data) => {
     },
     body: JSON.stringify(data),
   });
-  let snackbarMessage;
   const resData = await response.json();
-  console.log(resData, "resData")
   if (response.status === 200) {
     toast.success("Logged in Successfully!!")
   } else {
@@ -36,7 +27,8 @@ const loginSuccessSlice = createSlice({
     loading: false,
     error: null,
     isloggedIn: false,
-    token: ""
+    token: "",
+    role:'GenericUser'
   },
   reducers: {
     logOut(state, action) {

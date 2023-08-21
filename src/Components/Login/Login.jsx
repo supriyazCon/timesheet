@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../../Redux/login';
 import { ROUTES } from '../../Routes/Paths';
 import zohoImage from '../../Assets/images/zoho-logo.png'
-// Other imports...
 
 function Login() {
   const navigate = useNavigate();
@@ -18,13 +17,11 @@ function Login() {
     password: '',
   });
   const [usernameError, setUsernameError] = useState('');
-  const [usernamePasswordError, setUsernamePasswordError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [componentMounted, setComponentMounted] = useState(false);
   const loginError = useSelector((state) => state.loginSuccess.error)
   const isloggedIn = useSelector((state) => state.loginSuccess.isloggedIn)
-  console.log(loginError, isloggedIn, "loginerror", "isloggedin");
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -105,7 +102,7 @@ function Login() {
             fullWidth
             value={formData.username}
             onChange={handleChange}
-            error={!!usernameError || passwordError}
+            error={!!usernameError || !!passwordError}
             // helperText={usernameError || passwordError}
             margin="normal"
             variant="outlined"
@@ -117,7 +114,7 @@ function Login() {
             fullWidth
             value={formData.password}
             onChange={handleChange}
-            error={!!passwordError || usernameError}
+            error={!!passwordError || !!usernameError}
             helperText={passwordError || usernameError}
             margin="normal"
             variant="outlined"

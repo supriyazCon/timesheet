@@ -37,7 +37,6 @@ function JobGrid() {
     setSnackbarOpen(false);
   };
 
-  console.log(jobData, "jobData")
   const topComponents = [
     {
       control: SELECT_BOX,
